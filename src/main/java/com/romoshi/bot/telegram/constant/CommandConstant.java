@@ -7,6 +7,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PUBLIC, makeFinal = true)
 @NoArgsConstructor
 public class CommandConstant {
-    String START_COMMAND = "123";
-    String DEFAULT_COMMAND = "Извини, но я не знаю, что с этим делать \uD83E\uDEE0";
+    String prefix = "/";
+
+    String START_COMMAND = prefix + "start";
+    String PRODUCTS_COMMAND = "Товары";
+    String SITE_COMMAND = prefix + "site";
 }
