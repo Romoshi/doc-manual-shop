@@ -1,5 +1,8 @@
 package com.romoshi.bot.telegram.command;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public abstract class Handler {
     protected Handler successor;
 
