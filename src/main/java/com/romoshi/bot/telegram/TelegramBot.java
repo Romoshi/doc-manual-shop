@@ -36,8 +36,8 @@ public class TelegramBot extends SpringWebhookBot {
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
         try{
             if(update.hasMessage() && update.getMessage().hasText()) {
-                Message inMess = update.getMessage();
-                parseMessage(inMess);
+                Message message = update.getMessage();
+                parseMessage(message);
             }
         } catch (Exception e) {
             log.error("Update problems", e);
