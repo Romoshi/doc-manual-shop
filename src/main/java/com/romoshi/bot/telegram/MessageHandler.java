@@ -2,14 +2,21 @@ package com.romoshi.bot.telegram;
 
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import com.romoshi.bot.telegram.constant.CommandConstant;
+import com.romoshi.bot.telegram.keyboards.ReplyKeyboardMaker;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 
+@Component
+@RequiredArgsConstructor
 public class MessageHandler {
-    public static BotApiMethod<?> answerMessage(Update update) {
+
+    ReplyKeyboardMaker replyKeyboardMaker = new ReplyKeyboardMaker();
+    public BotApiMethod<?> answerMessage(Update update) {
         String messageText = update.getMessage().getText();
 
         if(messageText.equals(CommandConstant.START_COMMAND)) {
@@ -23,19 +30,21 @@ public class MessageHandler {
         }
     }
 
-    public static SendMessage getStart(Update update) {
-        return sendMsg(update, BotStringConstant.START_STRING);
+    private SendMessage getStart(Update update) {
+        SendMessage sendMessage = sendMsg(update, BotStringConstant.START_STRING);
+        sendMessage.setReplyMarkup(replyKeyboardMaker.getMainKeyboard());
+        return sendMessage;
     }
 
-    public static SendMessage getSite(Update update) {
+    public SendMessage getSite(Update update) {
         return sendMsg(update, BotStringConstant.SITE_STRING);
     }
 
-    public static SendMessage getProducts(Update update) {
+    public SendMessage getProducts(Update update) {
         return sendMsg(update, BotStringConstant.SALE_STRING);
     }
 
-    public static SendMessage getDefault(Update update) {
+    public SendMessage getDefault(Update update) {
         return sendMsg(update, BotStringConstant.DEFAULT_STRING);
     }
 }

@@ -1,5 +1,6 @@
 package com.romoshi.bot.telegram;
 
+import com.romoshi.bot.telegram.keyboards.ReplyKeyboardMaker;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -16,16 +17,17 @@ public class TelegramBot extends SpringWebhookBot {
 
     private String botPath;
     private String botUsername;
-
-    public TelegramBot(SetWebhook setWebhook, String botToken) {
+    private MessageHandler messageHandler;
+    public TelegramBot(SetWebhook setWebhook, String botToken, MessageHandler messageHandler) {
         super(setWebhook, botToken);
+        this.messageHandler = messageHandler;
     }
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
         if(update.hasMessage() && update.getMessage().hasText()) {
             try {
-                return MessageHandler.answerMessage(update);
+                return messageHandler.answerMessage(update);
             } catch (Exception e) {
                 log.error("Update problems", e);
             }

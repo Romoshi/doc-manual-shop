@@ -1,29 +1,33 @@
 package com.romoshi.bot.telegram.keyboards;
 
 
+import com.romoshi.bot.telegram.constant.CommandConstant;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Component
 public class ReplyKeyboardMaker {
 
-    public ReplyKeyboardMarkup getInlineMessageButtons() {
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        keyboardMarkup.setSelective(true);
-        keyboardMarkup.setResizeKeyboard(true);
-        keyboardMarkup.setOneTimeKeyboard(false);
+    public ReplyKeyboardMarkup getMainKeyboard() {
+        KeyboardRow row = new KeyboardRow();
+        row.add(new KeyboardButton(CommandConstant.PRODUCTS_COMMAND));
+        row.add(new KeyboardButton(CommandConstant.SHOW_SITE_COMMAND));
 
-        KeyboardButton button1 = new KeyboardButton("Товары");
-        KeyboardButton button2 = new KeyboardButton("Сайт");
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        keyboard.add(row);
 
-        keyboardMarkup.setKeyboard(List.of((KeyboardRow) List.of(button1, button2)));
+        final ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setKeyboard(keyboard);
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
 
-        return keyboardMarkup;
+        return replyKeyboardMarkup;
     }
 
 }
