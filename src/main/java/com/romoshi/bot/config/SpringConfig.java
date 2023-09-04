@@ -1,6 +1,6 @@
 package com.romoshi.bot.config;
 
-import com.romoshi.bot.telegram.MessageHandler;
+import com.romoshi.bot.services.MessageHandler;
 import com.romoshi.bot.telegram.TelegramBot;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

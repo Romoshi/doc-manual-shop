@@ -1,6 +1,6 @@
 package com.romoshi.bot.telegram;
 
-import com.romoshi.bot.telegram.keyboards.ReplyKeyboardMaker;
+import com.romoshi.bot.services.MessageHandler;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

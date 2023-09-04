@@ -1,4 +1,4 @@
-package com.romoshi.bot.controller;
+package com.romoshi.bot.controllers;
 
 import com.romoshi.bot.telegram.TelegramBot;
 import lombok.AllArgsConstructor;
