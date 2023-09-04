@@ -2,7 +2,7 @@ package com.romoshi.bot.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 
@@ -16,12 +16,15 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@Value("${product.imageUrl}")
+    @Column(nullable = false, length = 100)
+    @Value("${product.imageUrl}")
     private String imageUrl;
 
-    //@Value("${product.description}")
+    @Column(nullable = false)
+    @Value("${product.description}")
     private String description;
 
-    //@Value("${product.price}")
+    @Column(nullable = false)
+    @Value("${product.price}")
     private int price;
 }
