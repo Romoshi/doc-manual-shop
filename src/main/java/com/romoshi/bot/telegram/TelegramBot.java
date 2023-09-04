@@ -18,6 +18,7 @@ public class TelegramBot extends SpringWebhookBot {
     private String botPath;
     private String botUsername;
     private MessageHandler messageHandler;
+
     public TelegramBot(SetWebhook setWebhook, String botToken, MessageHandler messageHandler) {
         super(setWebhook, botToken);
         this.messageHandler = messageHandler;

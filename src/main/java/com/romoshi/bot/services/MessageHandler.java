@@ -5,6 +5,7 @@ import com.romoshi.bot.telegram.constant.BotStringConstant;
 import com.romoshi.bot.telegram.constant.CommandConstant;
 import com.romoshi.bot.telegram.keyboards.ReplyKeyboardMaker;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -19,19 +20,26 @@ import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 public class MessageHandler {
     final ProductService productService;
 
+    @Value("${doctorID.admin}")
+    public static String adminID;
+
     ReplyKeyboardMaker replyKeyboardMaker = new ReplyKeyboardMaker();
     public BotApiMethod<?> answerMessage(Update update) {
         String messageText = update.getMessage().getText();
+        String chatId = update.getMessage().getChatId().toString();
 
-        if(messageText.equals(CommandConstant.START_COMMAND)) {
-            return getStart(update);
-        } else if(messageText.equals(CommandConstant.SHOW_SITE_COMMAND)) {
-            return getSite(update);
-        }else if(messageText.equals(CommandConstant.PRODUCTS_COMMAND)) {
-            return sendProductList(update);
-        }else {
-            return getDefault(update);
+        if(chatId.equals(adminID)) {
+
+        } else {
+            return switch (messageText) {
+                case CommandConstant.START_COMMAND -> getStart(update);
+                case CommandConstant.SHOW_SITE_COMMAND -> getSite(update);
+                case CommandConstant.PRODUCTS_COMMAND -> sendProductList(update);
+                default -> getDefault(update);
+            };
         }
+
+        return null;
     }
 
     private SendMessage getStart(Update update) {
@@ -50,12 +58,15 @@ public class MessageHandler {
         if (products.isEmpty()) {
             return sendMsg(update, BotStringConstant.HAVE_NOT_PRODUCTS);
         } else {
-            StringBuilder productList = new StringBuilder();
             for (Product product : products) {
-                productList.append(product.getDescription()).append("\n").append(product.getPrice()).append("\n");
+                String result = product.getImageUrl() + "\n"
+                        + product.getDescription() + "\n"
+                        + product.getPrice() + "₽";
+                return sendMsg(update, result);
             }
-            return sendMsg(update, productList.toString());
         }
+
+        return null;
     }
 
     private SendMessage getDefault(Update update) {

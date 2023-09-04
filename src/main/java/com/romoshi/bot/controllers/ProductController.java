@@ -31,4 +31,19 @@ public class ProductController {
     public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
     }
+
+    @PutMapping("/{productId}/imageUrl")
+    public Product updateProductName(@PathVariable Long productId, @RequestParam String imageUrl) {
+        return productService.updateProductImageUrl(productId, imageUrl);
+    }
+
+    @PutMapping("/{productId}/description")
+    public Product updateProductDescription(@PathVariable Long productId, @RequestParam String newDescription) {
+        return productService.updateProductDescription(productId, newDescription);
+    }
+
+    @PutMapping("/{productId}/price")
+    public Product updateProductPrice(@PathVariable Long productId, @RequestParam int newPrice) {
+        return productService.updateProductPrice(productId, newPrice);
+    }
 }

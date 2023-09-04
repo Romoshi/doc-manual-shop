@@ -28,4 +28,31 @@ public class ProductService {
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
+
+    public Product updateProductImageUrl(Long productId, String imageUrl) {
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product != null) {
+            product.setImageUrl(imageUrl);
+            return productRepository.save(product);
+        }
+        return null;
+    }
+
+    public Product updateProductDescription(Long productId, String newDescription) {
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product != null) {
+            product.setDescription(newDescription);
+            return productRepository.save(product);
+        }
+        return null;
+    }
+
+    public Product updateProductPrice(Long productId, int newPrice) {
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product != null) {
+            product.setPrice(newPrice);
+            return productRepository.save(product);
+        }
+        return null;
+    }
 }
