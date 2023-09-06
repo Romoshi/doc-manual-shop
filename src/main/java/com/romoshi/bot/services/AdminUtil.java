@@ -16,8 +16,7 @@ public class AdminUtil {
     final ProductService productService;
 
     public SendMessage addProduct(Update update, Product product) {
-        Product newProduct = productService.saveProduct(product);
-
-        return sendMsg(update, BotStringConstant.SITE_STRING);
+        productService.saveProduct(product);
+        return sendMsg(update, BotStringConstant.ADD_STRING);
     }
 }

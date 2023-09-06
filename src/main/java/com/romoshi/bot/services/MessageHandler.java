@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.List;
+import java.util.*;
 
 import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 
@@ -19,32 +20,43 @@ import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 @RequiredArgsConstructor
 public class MessageHandler {
     final ProductService productService;
+    private final AdminUtil adminUtil;
 
-    @Value("${doctorID.admin}")
-    public static String adminID;
+    @Value("${developId}")
+    private String adminID;
+    public boolean isAdmin(String chatId) {
+        return chatId.equals(adminID);
+    }
 
     ReplyKeyboardMaker replyKeyboardMaker = new ReplyKeyboardMaker();
     public BotApiMethod<?> answerMessage(Update update) {
         String messageText = update.getMessage().getText();
-        String chatId = update.getMessage().getChatId().toString();
+      String chatId = update.getMessage().getChatId().toString();
 
-        if(chatId.equals(adminID)) {
-
-        } else {
-            return switch (messageText) {
-                case CommandConstant.START_COMMAND -> getStart(update);
-                case CommandConstant.SHOW_SITE_COMMAND -> getSite(update);
-                case CommandConstant.PRODUCTS_COMMAND -> sendProductList(update);
-                default -> getDefault(update);
-            };
+        if(isAdmin(chatId)) {
+            if(messageText.equals(CommandConstant.ADD_COMMAND)) {
+                Product product = new Product();
+                product.setImageUrl("1234");
+                product.setDescription("1251254214");
+                product.setPrice(1020);
+                return adminUtil.addProduct(update, product);
+            }
         }
 
-        return null;
+        return switch (messageText) {
+            case CommandConstant.START_COMMAND -> getStart(update);
+            case CommandConstant.SHOW_SITE_COMMAND -> getSite(update);
+            case CommandConstant.PRODUCTS_COMMAND -> sendProductList(update);
+            default -> getDefault(update);
+        };
     }
 
     private SendMessage getStart(Update update) {
+        String chatId = update.getMessage().getChatId().toString();
+
         SendMessage sendMessage = sendMsg(update, BotStringConstant.START_STRING);
-        sendMessage.setReplyMarkup(replyKeyboardMaker.getMainKeyboard());
+        sendMessage.setReplyMarkup(replyKeyboardMaker.getReplyKeyboard(isAdmin(chatId)));
+
         return sendMessage;
     }
 
@@ -52,7 +64,7 @@ public class MessageHandler {
         return sendMsg(update, BotStringConstant.SITE_STRING);
     }
 
-    private SendMessage sendProductList(Update update) {
+    private BotApiMethod<?> sendProductList(Update update) {
         List<Product> products = productService.getAllProducts();
 
         if (products.isEmpty()) {
