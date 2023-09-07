@@ -13,7 +13,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CallbackQueryHandler {
-    private InlineKeyboardMaker inlineKeyboardMaker = new InlineKeyboardMaker();
+    private final InlineKeyboardMaker inlineKeyboardMaker = new InlineKeyboardMaker();
+
     final ProductService productService;
     public BotApiMethod<?> processCallbackQuery(CallbackQuery callbackQuery) {
         String data = callbackQuery.getData();

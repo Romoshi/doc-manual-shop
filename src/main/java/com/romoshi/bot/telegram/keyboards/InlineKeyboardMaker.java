@@ -13,11 +13,9 @@ public class InlineKeyboardMaker {
 
     public InlineKeyboardMarkup getProductsButtons(List<Product> products) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
 
         for (Product product : products) {
-            keyboardButtonsRow.add(getButton(product.getName(), product.getId().toString()));
-            rowList.add(keyboardButtonsRow);
+            rowList.add(getButton(product.getName(), product.getId().toString()));
         }
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
@@ -25,20 +23,19 @@ public class InlineKeyboardMaker {
         return inlineKeyboardMarkup;
     }
 
-    public InlineKeyboardButton getButton(String buttonName, String id) {
+    private List<InlineKeyboardButton> getButton(String buttonName, String id) {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(buttonName);
         button.setCallbackData("button_" + id);
 
-        return button;
+        List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
+        keyboardButtonsRow.add(button);
+        return keyboardButtonsRow;
     }
 
     public InlineKeyboardMarkup getPayButton(int price, String id) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
-
-        keyboardButtonsRow.add(getButton("Цена: " + price, "price_" + id));
-        rowList.add(keyboardButtonsRow);
+        rowList.add(getButton("Купить за: " + price + "₽", "price_" + id));
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(rowList);
