@@ -32,14 +32,9 @@ public class ProductController {
         productService.deleteProduct(id);
     }
 
-    @PutMapping("/{productId}/imageUrl")
-    public Product updateProductName(@PathVariable Long productId, @RequestParam String imageUrl) {
-        return productService.updateProductImageUrl(productId, imageUrl);
-    }
-
     @PutMapping("/{productId}/description")
     public Product updateProductDescription(@PathVariable Long productId, @RequestParam String newDescription) {
-        return productService.updateProductDescription(productId, newDescription);
+        return productService.updateProductName(productId, newDescription);
     }
 
     @PutMapping("/{productId}/price")

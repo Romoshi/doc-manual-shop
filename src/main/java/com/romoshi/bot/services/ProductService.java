@@ -29,19 +29,10 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public Product updateProductImageUrl(Long productId, String imageUrl) {
+    public Product updateProductName(Long productId, String newName) {
         Product product = productRepository.findById(productId).orElse(null);
         if (product != null) {
-            product.setImageUrl(imageUrl);
-            return productRepository.save(product);
-        }
-        return null;
-    }
-
-    public Product updateProductDescription(Long productId, String newDescription) {
-        Product product = productRepository.findById(productId).orElse(null);
-        if (product != null) {
-            product.setDescription(newDescription);
+            product.setName(newName);
             return productRepository.save(product);
         }
         return null;

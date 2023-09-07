@@ -22,6 +22,7 @@ public class WebhookController {
         } catch (Exception ex) {
             log.error("Webhook exception", ex);
         }
+
         return null;
     }
 }
