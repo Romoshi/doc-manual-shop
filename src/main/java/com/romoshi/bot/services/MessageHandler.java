@@ -25,7 +25,7 @@ public class MessageHandler {
     final ProductService productService;
     private final AdminUtil adminUtil;
 
-    @Value("${doctorId}")
+    @Value("${developId}")
     private String adminID;
     public boolean isAdmin(String chatId) {
         return chatId.equals(adminID);
@@ -36,7 +36,7 @@ public class MessageHandler {
 
     public BotApiMethod<?> answerMessage(Update update) {
         String messageText = update.getMessage().getText();
-      String chatId = update.getMessage().getChatId().toString();
+        String chatId = update.getMessage().getChatId().toString();
 
         if(isAdmin(chatId)) {
             if(messageText.equals(CommandConstant.ADD_COMMAND)) {

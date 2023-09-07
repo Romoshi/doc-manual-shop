@@ -12,4 +12,6 @@ public class BotStringConstant {
     public static final String HAVE_NOT_PRODUCTS = "В магазине пока нет товаров.";
     public static final String SITE_STRING = "https://doctor-dyorina.tilda.ws/";
     public static final String DEFAULT_STRING = "Извини, к сожалению я не знаю, что с этим делать \uD83E\uDEE0";
+    public static final String PRODUCT_NAME = "\uD83D\uDE0C Название товара";
+    public static final int DEFAULT_PRODUCT_PRICE = 100;
 }
