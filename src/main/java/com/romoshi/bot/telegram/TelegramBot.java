@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.starter.SpringWebhookBot;
 
@@ -39,7 +40,7 @@ public class TelegramBot extends SpringWebhookBot {
             }
 
             if(update.hasMessage() && update.getMessage().hasText()) {
-                return messageHandler.answerMessage(update);
+                return messageHandler.answerMessage(update.getMessage());
             }
         } catch (Exception ex) {
             log.error("Update error", ex);
@@ -48,10 +49,12 @@ public class TelegramBot extends SpringWebhookBot {
         return null;
     }
 
-    public static SendMessage sendMsg(Update update, String text) {
+    public static SendMessage sendMsg(Message message, String text) {
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(update.getMessage().getChatId().toString());
+        sendMessage.enableMarkdown(true);
+        sendMessage.setChatId(message.getChatId());
         sendMessage.setText(text);
+
         return sendMessage;
     }
 }

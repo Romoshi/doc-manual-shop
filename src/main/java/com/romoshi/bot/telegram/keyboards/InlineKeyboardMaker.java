@@ -1,6 +1,7 @@
 package com.romoshi.bot.telegram.keyboards;
 
 import com.romoshi.bot.models.Product;
+import com.romoshi.bot.telegram.constant.BotStringConstant;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -33,9 +34,26 @@ public class InlineKeyboardMaker {
         return keyboardButtonsRow;
     }
 
-    public InlineKeyboardMarkup getPayButton(int price, String id) {
+    public InlineKeyboardMarkup getPayButton(int price, String id, boolean isAdmin) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(getButton("Купить за: " + price + "₽", "price_" + id));
+
+        if(isAdmin) {
+            rowList.add(getButton(BotStringConstant.UPDATE_GENERAL_INLINE, "update_" + id));
+            rowList.add(getButton(BotStringConstant.DELETE_INLINE, "delete_" + id));
+        }
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        return inlineKeyboardMarkup;
+    }
+
+    public InlineKeyboardMarkup getUpdateButton(String id) {
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+
+        rowList.add(getButton(BotStringConstant.UPDATE_NAME_INLINE, "update_name_" + id));
+        rowList.add(getButton(BotStringConstant.UPDATE_DESCRIPTION_INLINE, "update_descr_" + id));
+        rowList.add(getButton(BotStringConstant.UPDATE_PRICE_INLINE, "update_price_" + id));
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(rowList);

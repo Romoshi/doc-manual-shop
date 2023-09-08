@@ -16,9 +16,11 @@ public class ReplyKeyboardMaker {
 
     public ReplyKeyboardMarkup getReplyKeyboard(boolean isAdmin) {
         KeyboardRow row = new KeyboardRow();
+
         row.add(new KeyboardButton(CommandConstant.PRODUCTS_COMMAND));
         if(isAdmin) row.add(new KeyboardButton(CommandConstant.ADD_COMMAND));
         row.add(new KeyboardButton(CommandConstant.SHOW_SITE_COMMAND));
+
         List<KeyboardRow> keyboard = new ArrayList<>();
         keyboard.add(row);
 

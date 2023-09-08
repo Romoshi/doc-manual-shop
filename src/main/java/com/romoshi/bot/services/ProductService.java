@@ -38,6 +38,15 @@ public class ProductService {
         return null;
     }
 
+    public Product updateProductDescription(Long productId, String newDescription) {
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product != null) {
+            product.setName(newDescription);
+            return productRepository.save(product);
+        }
+        return null;
+    }
+
     public Product updateProductPrice(Long productId, int newPrice) {
         Product product = productRepository.findById(productId).orElse(null);
         if (product != null) {
