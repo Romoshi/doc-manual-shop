@@ -1,7 +1,7 @@
 package com.romoshi.bot.telegram;
 
-import com.romoshi.bot.services.CallbackQueryHandler;
-import com.romoshi.bot.services.MessageHandler;
+import com.romoshi.bot.services.handler.CallbackQueryHandler;
+import com.romoshi.bot.services.handler.MessageHandler;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

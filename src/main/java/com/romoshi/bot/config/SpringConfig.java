@@ -1,7 +1,7 @@
 package com.romoshi.bot.config;
 
-import com.romoshi.bot.services.CallbackQueryHandler;
-import com.romoshi.bot.services.MessageHandler;
+import com.romoshi.bot.services.handler.CallbackQueryHandler;
+import com.romoshi.bot.services.handler.MessageHandler;
 import com.romoshi.bot.telegram.TelegramBot;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

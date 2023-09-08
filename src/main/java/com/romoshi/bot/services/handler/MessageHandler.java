@@ -1,6 +1,12 @@
-package com.romoshi.bot.services;
+package com.romoshi.bot.services.handler;
 
 import com.romoshi.bot.models.Product;
+import com.romoshi.bot.models.User;
+import com.romoshi.bot.repositories.UserRepository;
+import com.romoshi.bot.services.AdminService;
+import com.romoshi.bot.services.AdminUtil;
+import com.romoshi.bot.services.ProductService;
+import com.romoshi.bot.services.UserService;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import com.romoshi.bot.telegram.constant.CommandConstant;
 import com.romoshi.bot.telegram.keyboards.InlineKeyboardMaker;
@@ -20,6 +26,7 @@ import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 @RequiredArgsConstructor
 public class MessageHandler {
     final ProductService productService;
+    final UserService userService;
 
     private final AdminService adminService;
     private final AdminUtil adminUtil;
@@ -46,11 +53,20 @@ public class MessageHandler {
         };
     }
 
+
+
     private SendMessage getStart(Message message) {
         String chatId = message.getChatId().toString();
 
+        if(!userService.checkIfUserExists(chatId)) {
+            User user = new User();
+            user.setChatId(chatId);
+            userService.saveUser(user);
+        }
+
         SendMessage sendMessage = sendMsg(message, BotStringConstant.START_STRING);
-        sendMessage.setReplyMarkup(replyKeyboardMaker.getReplyKeyboard(adminUtil.isAdmin(chatId)));
+        sendMessage.setReplyMarkup(replyKeyboardMaker.
+                getReplyKeyboard(adminUtil.isAdmin(chatId)));
 
         return sendMessage;
     }

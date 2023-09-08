@@ -1,6 +1,8 @@
-package com.romoshi.bot.services;
+package com.romoshi.bot.services.handler;
 
 import com.romoshi.bot.models.Product;
+import com.romoshi.bot.services.AdminUtil;
+import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import com.romoshi.bot.telegram.keyboards.InlineKeyboardMaker;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +31,14 @@ public class CallbackQueryHandler {
         for(Product product : products) {
             String button = "button_" + product.getId();
             String buttonUpdate = "button_update_" + product.getId();
+            String buttonDelete = "button_delete_" + product.getId();
 
             if(button.equals(data)) {
                 return firstCallback(callbackQuery, product);
             } else if(buttonUpdate.equals(data)) {
                 return generalUpdateCallback(callbackQuery, product);
+            } else if(buttonDelete.equals(data)) {
+                return deleteCallback(callbackQuery, product);
             }
         }
 
@@ -60,7 +65,8 @@ public class CallbackQueryHandler {
         return sendMessageUpdate;
     }
 
-    public BotApiMethod<?> deleteCallback() {
-        return null;
+    public BotApiMethod<?> deleteCallback(CallbackQuery callbackQuery, Product product) {
+        productService.deleteProduct(product.getId());
+        return sendMsg(callbackQuery.getMessage(), BotStringConstant.DELETE_MESSAGE);
     }
 }
