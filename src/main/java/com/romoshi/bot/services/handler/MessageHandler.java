@@ -63,29 +63,27 @@ public class MessageHandler {
 
                 if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_NAME + product.getId())) {
                     productService.updateProductName(product.getId(), message.getText());
-                    pendingAction = null;
-                    pendingUserId = null;
+                    pendingSetNull();
                     return sendMsg(message, BotStringConstant.UPDATE_NAME_MSG);
-                }
-
-                if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_DESCR + product.getId())) {
+                } else if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_DESCR + product.getId())) {
                     productService.updateProductDescription(product.getId(), message.getText());
-                    pendingAction = null;
-                    pendingUserId = null;
+                    pendingSetNull();
                     return sendMsg(message, BotStringConstant.UPDATE_DESCRIPTION_MSG);
-                }
-
-                if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_PRICE + product.getId())) {
+                } else if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_PRICE + product.getId())) {
                     productService.updateProductPrice(product.getId(),
                             Integer.parseInt(message.getText()));
-                    pendingAction = null;
-                    pendingUserId = null;
+                    pendingSetNull();
                     return sendMsg(message, BotStringConstant.UPDATE_PRICE_MSG);
                 }
             }
         }
 
         return answerMessage(message);
+    }
+
+    private void pendingSetNull() {
+        pendingAction = null;
+        pendingUserId = null;
     }
 
     private SendMessage getStart(Message message) {
