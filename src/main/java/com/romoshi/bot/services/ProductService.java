@@ -41,7 +41,7 @@ public class ProductService {
     public Product updateProductDescription(Long productId, String newDescription) {
         Product product = productRepository.findById(productId).orElse(null);
         if (product != null) {
-            product.setName(newDescription);
+            product.setDescription(newDescription);
             return productRepository.save(product);
         }
         return null;

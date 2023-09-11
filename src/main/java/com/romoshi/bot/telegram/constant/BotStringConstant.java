@@ -23,9 +23,17 @@ public class BotStringConstant {
     public static final String UPDATE_MESSAGE = "Что хотите изменить?";
     public static final String DELETE_MESSAGE = "Товар удалён.";
     public static final String UPDATE_GENERAL_INLINE = "Изменить товар.";
-    public static final String UPDATE_NAME_INLINE = "Изменить название товара.";
+    public static final String UPDATE_NAME_INLINE = "Изменить название.";
     public static final String UPDATE_DESCRIPTION_INLINE = "Изменить описание.";
     public static final String UPDATE_PRICE_INLINE = "Изменить стоймость.";
     public static final String DELETE_INLINE = "Удалить товар.";
+
+    //Update messages
+    public static final String UPDATE_NAME_MSG_HANDLE = "Введите новое имя: ";
+    public static final String UPDATE_DESCR_MSG_HANDLE = "Введите новое описание: ";
+    public static final String UPDATE_PRICE_MSG_HANDLE = "Введите новую стоймость: ";
+    public static final String UPDATE_NAME_MSG = "Название изменено!";
+    public static final String UPDATE_DESCRIPTION_MSG = "Описание изменено!";
+    public static final String UPDATE_PRICE_MSG = "Стоймость изменена!";
 
 }

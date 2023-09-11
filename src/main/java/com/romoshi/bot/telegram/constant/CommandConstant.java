@@ -1,8 +1,6 @@
 package com.romoshi.bot.telegram.constant;
 
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
 @NoArgsConstructor
 public class CommandConstant {

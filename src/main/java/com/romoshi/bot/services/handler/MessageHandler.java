@@ -2,12 +2,12 @@ package com.romoshi.bot.services.handler;
 
 import com.romoshi.bot.models.Product;
 import com.romoshi.bot.models.User;
-import com.romoshi.bot.repositories.UserRepository;
 import com.romoshi.bot.services.AdminService;
 import com.romoshi.bot.services.AdminUtil;
 import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.services.UserService;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
+import com.romoshi.bot.telegram.constant.ButtonConstant;
 import com.romoshi.bot.telegram.constant.CommandConstant;
 import com.romoshi.bot.telegram.keyboards.InlineKeyboardMaker;
 import com.romoshi.bot.telegram.keyboards.ReplyKeyboardMaker;
@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 
@@ -31,6 +31,8 @@ public class MessageHandler {
     private final AdminService adminService;
     private final AdminUtil adminUtil;
 
+    public static String pendingAction = null;
+    public static String pendingUserId = null;
 
     ReplyKeyboardMaker replyKeyboardMaker = new ReplyKeyboardMaker();
     InlineKeyboardMaker inlineKeyboardMaker = new InlineKeyboardMaker();
@@ -53,7 +55,38 @@ public class MessageHandler {
         };
     }
 
+    public BotApiMethod<?> pendingAction(Message message) {
+        List<Product> products = productService.getAllProducts();
+        for(var product : products) {
+            if (pendingAction != null &&
+                    Objects.equals(message.getChatId().toString(), pendingUserId)) {
 
+                if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_NAME + product.getId())) {
+                    productService.updateProductName(product.getId(), message.getText());
+                    pendingAction = null;
+                    pendingUserId = null;
+                    return sendMsg(message, BotStringConstant.UPDATE_NAME_MSG);
+                }
+
+                if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_DESCR + product.getId())) {
+                    productService.updateProductDescription(product.getId(), message.getText());
+                    pendingAction = null;
+                    pendingUserId = null;
+                    return sendMsg(message, BotStringConstant.UPDATE_DESCRIPTION_MSG);
+                }
+
+                if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_PRICE + product.getId())) {
+                    productService.updateProductPrice(product.getId(),
+                            Integer.parseInt(message.getText()));
+                    pendingAction = null;
+                    pendingUserId = null;
+                    return sendMsg(message, BotStringConstant.UPDATE_PRICE_MSG);
+                }
+            }
+        }
+
+        return answerMessage(message);
+    }
 
     private SendMessage getStart(Message message) {
         String chatId = message.getChatId().toString();

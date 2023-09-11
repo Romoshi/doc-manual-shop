@@ -1,5 +1,6 @@
 package com.romoshi.bot.telegram;
 
+import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.services.handler.CallbackQueryHandler;
 import com.romoshi.bot.services.handler.MessageHandler;
 import lombok.Getter;
@@ -23,6 +24,9 @@ public class TelegramBot extends SpringWebhookBot {
 
     private MessageHandler messageHandler;
     private CallbackQueryHandler callbackQueryHandler;
+    private ProductService productService;
+
+
 
     public TelegramBot(SetWebhook setWebhook, String botToken, MessageHandler messageHandler,
                        CallbackQueryHandler callbackQueryHandler) {
@@ -37,10 +41,9 @@ public class TelegramBot extends SpringWebhookBot {
             if (update.hasCallbackQuery()) {
                 CallbackQuery callbackQuery = update.getCallbackQuery();
                 return callbackQueryHandler.processCallbackQuery(callbackQuery);
-            }
+            } else if(update.hasMessage() && update.getMessage().hasText()) {
 
-            if(update.hasMessage() && update.getMessage().hasText()) {
-                return messageHandler.answerMessage(update.getMessage());
+                return messageHandler.pendingAction(update.getMessage());
             }
         } catch (Exception ex) {
             log.error("Update error", ex);
