@@ -72,13 +72,13 @@ public class MessageHandler {
                 } else if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_PRICE + product.getId())) {
 
                     try {
-                        Integer.parseInt(message.getText()); // Используйте Integer.parseInt() для целых чисел
+                        Integer.parseInt(message.getText());
                         productService.updateProductPrice(product.getId(),
                                 Integer.parseInt(message.getText()));
                         pendingSetNull();
                         return sendMsg(message, BotStringConstant.UPDATE_PRICE_MSG);
                     } catch (NumberFormatException e) {
-                        return sendMsg(message, "Введите, пожалуйста, число");
+                        return sendMsg(message, "Введите, пожалуйста, число.");
                     }
 
                 }

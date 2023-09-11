@@ -36,14 +36,14 @@ public class CallbackQueryHandler {
             } else if((ButtonConstant.BUTTON_DELETE + product.getId()).equals(data)) {
                 return deleteCallback(callbackQuery, product);
             } else if((ButtonConstant.BUTTON_UPDATE_NAME + product.getId()).equals(data)) {
-                return updateNameAction(callbackQuery,
-                        ButtonConstant.BUTTON_UPDATE_NAME + product.getId());
+                return updateAction(callbackQuery,
+                        ButtonConstant.BUTTON_UPDATE_NAME + product.getId(), product);
             } else if((ButtonConstant.BUTTON_UPDATE_DESCR + product.getId()).equals(data)) {
-                return updateDescrAction(callbackQuery,
-                        ButtonConstant.BUTTON_UPDATE_DESCR + product.getId());
+                return updateAction(callbackQuery,
+                        ButtonConstant.BUTTON_UPDATE_DESCR + product.getId(), product);
             } else if((ButtonConstant.BUTTON_UPDATE_PRICE + product.getId()).equals(data)) {
-                return updatePriceAction(callbackQuery,
-                        ButtonConstant.BUTTON_UPDATE_PRICE + product.getId());
+                return updateAction(callbackQuery,
+                        ButtonConstant.BUTTON_UPDATE_PRICE + product.getId(), product);
             }
         }
 
@@ -70,22 +70,20 @@ public class CallbackQueryHandler {
         return sendMessageUpdate;
     }
 
-    private BotApiMethod<?> updateNameAction(CallbackQuery callbackQuery, String button) {
+    private BotApiMethod<?> updateAction(CallbackQuery callbackQuery, String button, Product product) {
         MessageHandler.pendingAction = button;
         MessageHandler.pendingUserId = callbackQuery.getMessage().getChatId().toString();
-        return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_NAME_MSG_HANDLE);
-    }
 
-    private BotApiMethod<?> updateDescrAction(CallbackQuery callbackQuery, String button) {
-        MessageHandler.pendingAction = button;
-        MessageHandler.pendingUserId = callbackQuery.getMessage().getChatId().toString();
-        return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_DESCR_MSG_HANDLE);
-    }
+        if(button.equals(ButtonConstant.BUTTON_UPDATE_NAME + product.getId()))
+            return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_NAME_MSG_HANDLE);
 
-    private BotApiMethod<?> updatePriceAction(CallbackQuery callbackQuery, String button) {
-        MessageHandler.pendingAction = button;
-        MessageHandler.pendingUserId = callbackQuery.getMessage().getChatId().toString();
-        return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_PRICE_MSG_HANDLE);
+        if(button.equals(ButtonConstant.BUTTON_UPDATE_DESCR + product.getId()))
+            return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_DESCR_MSG_HANDLE);
+
+        if(button.equals(ButtonConstant.BUTTON_UPDATE_PRICE + product.getId()))
+            return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_PRICE_MSG_HANDLE);
+
+        return null;
     }
 
     private BotApiMethod<?> deleteCallback(CallbackQuery callbackQuery, Product product) {
