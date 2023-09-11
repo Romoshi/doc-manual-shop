@@ -70,10 +70,17 @@ public class MessageHandler {
                     pendingSetNull();
                     return sendMsg(message, BotStringConstant.UPDATE_DESCRIPTION_MSG);
                 } else if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_PRICE + product.getId())) {
-                    productService.updateProductPrice(product.getId(),
-                            Integer.parseInt(message.getText()));
-                    pendingSetNull();
-                    return sendMsg(message, BotStringConstant.UPDATE_PRICE_MSG);
+
+                    try {
+                        Integer.parseInt(message.getText()); // Используйте Integer.parseInt() для целых чисел
+                        productService.updateProductPrice(product.getId(),
+                                Integer.parseInt(message.getText()));
+                        pendingSetNull();
+                        return sendMsg(message, BotStringConstant.UPDATE_PRICE_MSG);
+                    } catch (NumberFormatException e) {
+                        return sendMsg(message, "Введите, пожалуйста, число");
+                    }
+
                 }
             }
         }
