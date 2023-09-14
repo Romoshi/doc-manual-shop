@@ -1,6 +1,6 @@
 package com.romoshi.bot.config;
 
-import com.romoshi.bot.services.handler.CallbackQueryHandler;
+import com.romoshi.bot.services.handler.CallbackHandler;
 import com.romoshi.bot.services.handler.MessageHandler;
 import com.romoshi.bot.telegram.TelegramBot;
 import lombok.AllArgsConstructor;
@@ -20,10 +20,10 @@ public class SpringConfig {
 
     @Bean
     public TelegramBot springWebhookBot(SetWebhook setWebhook, MessageHandler messageHandler,
-                                        CallbackQueryHandler callbackQueryHandler) {
+                                        CallbackHandler callbackHandler) {
         TelegramBot bot = new TelegramBot(setWebhook, telegramConfig.getBotToken(),
                                         messageHandler,
-                                        callbackQueryHandler);
+                                        callbackHandler);
 
         bot.setBotUsername(telegramConfig.getBotUsername());
         bot.setBotPath(telegramConfig.getWebhookPath());

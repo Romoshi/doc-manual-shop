@@ -18,7 +18,7 @@ import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 
 @Service
 @RequiredArgsConstructor
-public class CallbackQueryHandler {
+public class CallbackHandler {
     private final InlineKeyboardMaker inlineKeyboardMaker = new InlineKeyboardMaker();
 
     private final AdminUtil adminUtil;
@@ -28,29 +28,41 @@ public class CallbackQueryHandler {
         String data = callbackQuery.getData();
         List<Product> products = productService.getAllProducts();
 
+
         for(Product product : products) {
-            if((ButtonConstant.BUTTON + product.getId()).equals(data)) {
-                return firstCallback(callbackQuery, product);
-            } else if((ButtonConstant.BUTTON_UPDATE + product.getId()).equals(data)) {
-                return generalUpdateCallback(callbackQuery, product);
-            } else if((ButtonConstant.BUTTON_DELETE + product.getId()).equals(data)) {
-                return deleteCallback(callbackQuery, product);
-            } else if((ButtonConstant.BUTTON_UPDATE_NAME + product.getId()).equals(data)) {
-                return updateAction(callbackQuery,
-                        ButtonConstant.BUTTON_UPDATE_NAME + product.getId(), product);
-            } else if((ButtonConstant.BUTTON_UPDATE_DESCR + product.getId()).equals(data)) {
-                return updateAction(callbackQuery,
-                        ButtonConstant.BUTTON_UPDATE_DESCR + product.getId(), product);
-            } else if((ButtonConstant.BUTTON_UPDATE_PRICE + product.getId()).equals(data)) {
-                return updateAction(callbackQuery,
-                        ButtonConstant.BUTTON_UPDATE_PRICE + product.getId(), product);
-            }
+
+
+
+
+
+
+
+
+//            if(equalsButton(getButtonCallback(ButtonConstant.BUTTON, product), data)) {
+//                return firstCallback(callbackQuery, product);
+//            } else if(equalsButton(getButtonCallback(ButtonConstant.BUTTON_UPDATE, product), data)) {
+//                return generalUpdateCallback(callbackQuery, product);
+//            } else if(equalsButton(getButtonCallback(ButtonConstant.BUTTON_DELETE, product), data)) {
+//                return deleteCallback(callbackQuery, product);
+//            } else if(equalsButton(getButtonCallback(ButtonConstant.BUTTON_UPDATE_NAME, product), data)) {
+//                return updateAction(callbackQuery,
+//                        getButtonCallback(ButtonConstant.BUTTON_UPDATE_NAME, product),
+//                        product);
+//            } else if(equalsButton(getButtonCallback(ButtonConstant.BUTTON_UPDATE_DESCR, product), data)) {
+//                return updateAction(callbackQuery,
+//                        getButtonCallback(ButtonConstant.BUTTON_UPDATE_DESCR, product),
+//                        product);
+//            } else if(equalsButton(getButtonCallback(ButtonConstant.BUTTON_UPDATE_PRICE, product), data)) {
+//                return updateAction(callbackQuery,
+//                        getButtonCallback(ButtonConstant.BUTTON_UPDATE_PRICE, product),
+//                        product);
+//            }
         }
 
         return null;
     }
 
-    private BotApiMethod<?> firstCallback(CallbackQuery callbackQuery, Product product) {
+    public BotApiMethod<?> firstCallback(CallbackQuery callbackQuery, Product product) {
         String chatId = callbackQuery.getMessage().getChatId().toString();
 
         SendMessage sendMessage = sendMsg(callbackQuery.getMessage(),
@@ -61,7 +73,7 @@ public class CallbackQueryHandler {
         return sendMessage;
     }
 
-    private BotApiMethod<?> generalUpdateCallback(CallbackQuery callbackQuery, Product product) {
+    public BotApiMethod<?> generalUpdateCallback(CallbackQuery callbackQuery, Product product) {
         SendMessage sendMessageUpdate = sendMsg(callbackQuery.getMessage(),
                 BotStringConstant.UPDATE_MESSAGE);
         sendMessageUpdate.setReplyMarkup(inlineKeyboardMaker.
@@ -70,7 +82,7 @@ public class CallbackQueryHandler {
         return sendMessageUpdate;
     }
 
-    private BotApiMethod<?> updateAction(CallbackQuery callbackQuery, String button, Product product) {
+    public BotApiMethod<?> updateAction(CallbackQuery callbackQuery, String button, Product product) {
         MessageHandler.pendingAction = button;
         MessageHandler.pendingUserId = callbackQuery.getMessage().getChatId().toString();
 
@@ -86,8 +98,17 @@ public class CallbackQueryHandler {
         return null;
     }
 
-    private BotApiMethod<?> deleteCallback(CallbackQuery callbackQuery, Product product) {
+    public BotApiMethod<?> deleteCallback(CallbackQuery callbackQuery, Product product) {
         productService.deleteProduct(product.getId());
         return sendMsg(callbackQuery.getMessage(), BotStringConstant.DELETE_MESSAGE);
+    }
+
+    //Сравнение команды текущего нажатия с сохранёнными
+    public boolean equalsButton(String button, String data) {
+        return (button.equals(data));
+    }
+
+    public String getButtonCallback(String button, Product product) {
+        return button + product.getId();
     }
 }

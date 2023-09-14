@@ -1,5 +1,7 @@
 package com.romoshi.bot.telegram.constant;
 
+import com.romoshi.bot.models.Product;
+
 public class ButtonConstant {
 
     public static final String BUTTON = "button_";

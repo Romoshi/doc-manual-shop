@@ -1,20 +1,18 @@
 package com.romoshi.bot.services.handler;
 
 import com.romoshi.bot.models.Product;
-import com.romoshi.bot.models.User;
 import com.romoshi.bot.services.AdminService;
 import com.romoshi.bot.services.AdminUtil;
 import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.services.UserService;
+import com.romoshi.bot.services.command.message.Command;
+import com.romoshi.bot.services.command.message.CommandFactory;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import com.romoshi.bot.telegram.constant.ButtonConstant;
 import com.romoshi.bot.telegram.constant.CommandConstant;
-import com.romoshi.bot.telegram.keyboards.InlineKeyboardMaker;
-import com.romoshi.bot.telegram.keyboards.ReplyKeyboardMaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
@@ -28,14 +26,13 @@ public class MessageHandler {
     final ProductService productService;
     final UserService userService;
 
+    private final CommandFactory commandFactory;
+
     private final AdminService adminService;
     private final AdminUtil adminUtil;
 
     public static String pendingAction = null;
     public static String pendingUserId = null;
-
-    ReplyKeyboardMaker replyKeyboardMaker = new ReplyKeyboardMaker();
-    InlineKeyboardMaker inlineKeyboardMaker = new InlineKeyboardMaker();
 
     public BotApiMethod<?> answerMessage(Message message) {
         String messageText = message.getText();
@@ -47,12 +44,8 @@ public class MessageHandler {
             }
         }
 
-        return switch (messageText) {
-            case CommandConstant.START_COMMAND -> getStart(message);
-            case CommandConstant.SHOW_SITE_COMMAND -> getSite(message);
-            case CommandConstant.PRODUCTS_COMMAND -> sendProductList(message);
-            default -> getDefault(message);
-        };
+        Command command = commandFactory.createCommand(messageText);
+        return command.execute(message);
     }
 
     public BotApiMethod<?> pendingAction(Message message) {
@@ -70,7 +63,6 @@ public class MessageHandler {
                     pendingSetNull();
                     return sendMsg(message, BotStringConstant.UPDATE_DESCRIPTION_MSG);
                 } else if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_PRICE + product.getId())) {
-
                     try {
                         Integer.parseInt(message.getText());
                         productService.updateProductPrice(product.getId(),
@@ -92,42 +84,4 @@ public class MessageHandler {
         pendingAction = null;
         pendingUserId = null;
     }
-
-    private SendMessage getStart(Message message) {
-        String chatId = message.getChatId().toString();
-
-        if(!userService.checkIfUserExists(chatId)) {
-            User user = new User();
-            user.setChatId(chatId);
-            userService.saveUser(user);
-        }
-
-        SendMessage sendMessage = sendMsg(message, BotStringConstant.START_STRING);
-        sendMessage.setReplyMarkup(replyKeyboardMaker.
-                getReplyKeyboard(adminUtil.isAdmin(chatId)));
-
-        return sendMessage;
-    }
-
-    private SendMessage getSite(Message message) {
-        return sendMsg(message, BotStringConstant.SITE_STRING);
-    }
-
-    private BotApiMethod<?> sendProductList(Message message) {
-        List<Product> products = productService.getAllProducts();
-
-        SendMessage sendMessage = sendMsg(message, BotStringConstant.PRODUCT_LIST);
-        sendMessage.setReplyMarkup(inlineKeyboardMaker.getProductsButtons(products));
-
-        if (products.isEmpty()) {
-            return sendMsg(message, BotStringConstant.HAVE_NOT_PRODUCTS);
-        } else {
-            return sendMessage;
-        }
-    }
-
-    private SendMessage getDefault(Message message) {
-        return sendMsg(message, BotStringConstant.DEFAULT_STRING);
-    }
-
 }
