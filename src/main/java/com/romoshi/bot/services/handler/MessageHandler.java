@@ -13,6 +13,7 @@ import com.romoshi.bot.telegram.constant.CommandConstant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class MessageHandler {
     private final AdminUtil adminUtil;
 
     public static String pendingAction = null;
-    public static String pendingUserId = null;
+    public static long pendingUserId = 0;
 
     public BotApiMethod<?> answerMessage(Message message) {
         String messageText = message.getText();
@@ -50,29 +51,24 @@ public class MessageHandler {
 
     public BotApiMethod<?> pendingAction(Message message) {
         List<Product> products = productService.getAllProducts();
-        for(var product : products) {
-            if (pendingAction != null &&
-                    Objects.equals(message.getChatId().toString(), pendingUserId)) {
 
-                if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_NAME + product.getId())) {
-                    productService.updateProductName(product.getId(), message.getText());
-                    pendingSetNull();
-                    return sendMsg(message, BotStringConstant.UPDATE_NAME_MSG);
-                } else if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_DESCR + product.getId())) {
-                    productService.updateProductDescription(product.getId(), message.getText());
-                    pendingSetNull();
-                    return sendMsg(message, BotStringConstant.UPDATE_DESCRIPTION_MSG);
-                } else if (pendingAction.equals(ButtonConstant.BUTTON_UPDATE_PRICE + product.getId())) {
-                    try {
-                        Integer.parseInt(message.getText());
-                        productService.updateProductPrice(product.getId(),
-                                Integer.parseInt(message.getText()));
+        for(Product product : products) {
+            if (pendingAction != null && pendingUserId == message.getChatId()) {
+
+                switch (pendingAction) {
+                    case ButtonConstant.BUTTON_UPDATE_NAME -> {
+                        productService.updateProductName(product.getId(), message.getText());
                         pendingSetNull();
-                        return sendMsg(message, BotStringConstant.UPDATE_PRICE_MSG);
-                    } catch (NumberFormatException e) {
-                        return sendMsg(message, "Введите, пожалуйста, число.");
+                        return sendMsg(message, BotStringConstant.UPDATE_NAME_MSG);
                     }
-
+                    case ButtonConstant.BUTTON_UPDATE_DESCR -> {
+                        productService.updateProductDescription(product.getId(), message.getText());
+                        pendingSetNull();
+                        return sendMsg(message, BotStringConstant.UPDATE_DESCRIPTION_MSG);
+                    }
+                    case ButtonConstant.BUTTON_UPDATE_PRICE -> {
+                        return intCheck(message, product.getId());
+                    }
                 }
             }
         }
@@ -80,8 +76,20 @@ public class MessageHandler {
         return answerMessage(message);
     }
 
+    private SendMessage intCheck(Message message, long id) {
+        try {
+            Integer.parseInt(message.getText());
+            productService.updateProductPrice(id, Integer.parseInt(message.getText()));
+            pendingSetNull();
+
+            return sendMsg(message, BotStringConstant.UPDATE_PRICE_MSG);
+        } catch (NumberFormatException e) {
+            return sendMsg(message, "Введите, пожалуйста, число.");
+        }
+    }
+
     private void pendingSetNull() {
         pendingAction = null;
-        pendingUserId = null;
+        pendingUserId = 0;
     }
 }

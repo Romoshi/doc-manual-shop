@@ -16,7 +16,7 @@ public class InlineKeyboardMaker {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
 
         for (Product product : products) {
-            rowList.add(getButton(product.getName(), product.getId().toString()));
+            rowList.add(getButton(product.getName(), "_" + product.getId().toString()));
         }
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
@@ -27,7 +27,7 @@ public class InlineKeyboardMaker {
     private List<InlineKeyboardButton> getButton(String buttonName, String id) {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(buttonName);
-        button.setCallbackData("button_" + id);
+        button.setCallbackData("button" + id);
 
         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
         keyboardButtonsRow.add(button);
@@ -36,11 +36,11 @@ public class InlineKeyboardMaker {
 
     public InlineKeyboardMarkup getPayButton(int price, String id, boolean isAdmin) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(getButton("Купить за: " + price + "₽", "price_" + id));
+        rowList.add(getButton("Купить за: " + price + "₽", "Price"  + "_" + id));
 
         if(isAdmin) {
-            rowList.add(getButton(BotStringConstant.UPDATE_GENERAL_INLINE, "update_" + id));
-            rowList.add(getButton(BotStringConstant.DELETE_INLINE, "delete_" + id));
+            rowList.add(getButton(BotStringConstant.UPDATE_GENERAL_INLINE, "Update"  + "_" + id));
+            rowList.add(getButton(BotStringConstant.DELETE_INLINE, "Delete"  + "_" + id));
         }
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
@@ -51,9 +51,9 @@ public class InlineKeyboardMaker {
     public InlineKeyboardMarkup getUpdateButton(String id) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
 
-        rowList.add(getButton(BotStringConstant.UPDATE_NAME_INLINE, "update_name_" + id));
-        rowList.add(getButton(BotStringConstant.UPDATE_DESCRIPTION_INLINE, "update_descr_" + id));
-        rowList.add(getButton(BotStringConstant.UPDATE_PRICE_INLINE, "update_price_" + id));
+        rowList.add(getButton(BotStringConstant.UPDATE_NAME_INLINE, "UpdateName"  + "_" + id));
+        rowList.add(getButton(BotStringConstant.UPDATE_DESCRIPTION_INLINE, "UpdateDescription"  + "_" + id));
+        rowList.add(getButton(BotStringConstant.UPDATE_PRICE_INLINE, "UpdatePrice"  + "_" + id));
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(rowList);
