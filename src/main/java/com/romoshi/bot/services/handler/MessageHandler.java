@@ -5,6 +5,8 @@ import com.romoshi.bot.services.AdminService;
 import com.romoshi.bot.services.AdminUtil;
 import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.services.UserService;
+import com.romoshi.bot.services.command.callback.Action;
+import com.romoshi.bot.services.command.callback.ActionFactory;
 import com.romoshi.bot.services.command.message.Command;
 import com.romoshi.bot.services.command.message.CommandFactory;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
@@ -28,6 +30,7 @@ public class MessageHandler {
     final UserService userService;
 
     private final CommandFactory commandFactory;
+    private final ActionFactory actionFactory;
 
     private final AdminService adminService;
     private final AdminUtil adminUtil;
@@ -50,45 +53,20 @@ public class MessageHandler {
     }
 
     public BotApiMethod<?> pendingAction(Message message) {
-        List<Product> products = productService.getAllProducts();
 
-        for(Product product : products) {
-            if (pendingAction != null && pendingUserId == message.getChatId()) {
+        if (pendingAction != null && pendingUserId == message.getChatId()) {
 
-                switch (pendingAction) {
-                    case ButtonConstant.BUTTON_UPDATE_NAME -> {
-                        productService.updateProductName(product.getId(), message.getText());
-                        pendingSetNull();
-                        return sendMsg(message, BotStringConstant.UPDATE_NAME_MSG);
-                    }
-                    case ButtonConstant.BUTTON_UPDATE_DESCR -> {
-                        productService.updateProductDescription(product.getId(), message.getText());
-                        pendingSetNull();
-                        return sendMsg(message, BotStringConstant.UPDATE_DESCRIPTION_MSG);
-                    }
-                    case ButtonConstant.BUTTON_UPDATE_PRICE -> {
-                        return intCheck(message, product.getId());
-                    }
+            List<Product> products = productService.getAllProducts();
+            for(Product product : products) {
+                Action action = actionFactory.createAction(pendingAction);
+                return action.update(message, product);
                 }
             }
-        }
 
         return answerMessage(message);
     }
 
-    private SendMessage intCheck(Message message, long id) {
-        try {
-            Integer.parseInt(message.getText());
-            productService.updateProductPrice(id, Integer.parseInt(message.getText()));
-            pendingSetNull();
-
-            return sendMsg(message, BotStringConstant.UPDATE_PRICE_MSG);
-        } catch (NumberFormatException e) {
-            return sendMsg(message, "Введите, пожалуйста, число.");
-        }
-    }
-
-    private void pendingSetNull() {
+    public static void pendingSetNull() {
         pendingAction = null;
         pendingUserId = 0;
     }
