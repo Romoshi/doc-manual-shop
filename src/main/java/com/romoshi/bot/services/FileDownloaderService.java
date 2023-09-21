@@ -41,7 +41,7 @@ public class FileDownloaderService {
                 String filePath = file.getFilePath();
                 String fileUrl = "https://api.telegram.org/file/bot" +
                         botToken + "/" + filePath;
-                saveFileFromUrl(fileUrl, savePath);
+                saveFileFromUrl(fileUrl, savePath + document.getFileName() + ".pdf");
             }
         } catch (IOException ex) {
             log.error("Can`t save file.", ex);
@@ -61,15 +61,12 @@ public class FileDownloaderService {
             InputStream inputStream = connection.getInputStream();
             InputStreamReader reader = new InputStreamReader(inputStream);
 
-            // Преобразуйте JSON-ответ в объект JsonObject с помощью Gson
             Gson gson = new Gson();
             JsonObject json = gson.fromJson(reader, JsonObject.class);
 
-            // Получите информацию о файле из JSON
             String fId = json.get("result").getAsJsonObject().get("file_id").getAsString();
             String filePath = json.get("result").getAsJsonObject().get("file_path").getAsString();
 
-            // Создайте объект File и установите в него необходимые данные
             File file = new File();
             file.setFileId(fId);
             file.setFilePath(filePath);
