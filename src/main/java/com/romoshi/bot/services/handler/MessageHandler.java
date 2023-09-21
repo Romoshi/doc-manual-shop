@@ -9,19 +9,13 @@ import com.romoshi.bot.services.command.callback.Action;
 import com.romoshi.bot.services.command.callback.ActionFactory;
 import com.romoshi.bot.services.command.message.Command;
 import com.romoshi.bot.services.command.message.CommandFactory;
-import com.romoshi.bot.telegram.constant.BotStringConstant;
-import com.romoshi.bot.telegram.constant.ButtonConstant;
 import com.romoshi.bot.telegram.constant.CommandConstant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
-import java.util.Objects;
-
-import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 
 @Service
 @RequiredArgsConstructor

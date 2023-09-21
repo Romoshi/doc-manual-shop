@@ -15,6 +15,7 @@ public class BotStringConstant {
     public static final String NOTIFICATION_STRING = "Дорогой друг! У меня появился новый товар! \uD83C\uDF89";
 
     //Default info product button.
+    public static final String DEFAULT_PRODUCT_FILE_ID = "null";
     public static final String DEFAULT_PRODUCT_NAME = "Название товара";
     public static final String DEFAULT_DESCRIPTION = "Описание товара.";
     public static final int DEFAULT_PRODUCT_PRICE = 100;
@@ -23,15 +24,18 @@ public class BotStringConstant {
     public static final String UPDATE_MESSAGE = "Что хотите изменить?";
     public static final String DELETE_MESSAGE = "Товар удалён.";
     public static final String UPDATE_GENERAL_INLINE = "Изменить товар.";
+    public static final String UPDATE_FILE_INLINE = "Добавить файл.";
     public static final String UPDATE_NAME_INLINE = "Изменить название.";
     public static final String UPDATE_DESCRIPTION_INLINE = "Изменить описание.";
     public static final String UPDATE_PRICE_INLINE = "Изменить стоймость.";
     public static final String DELETE_INLINE = "Удалить товар.";
 
     //Update messages
-    public static final String UPDATE_NAME_MSG_HANDLE = "Введите новое имя: ";
-    public static final String UPDATE_DESCR_MSG_HANDLE = "Введите новое описание: ";
-    public static final String UPDATE_PRICE_MSG_HANDLE = "Введите новую стоймость: ";
+    public static final String UPDATE_NAME_FILE_ID_HANDLE = "Отправте новый файл: ";
+    public static final String UPDATE_NAME_HANDLE = "Введите новое имя: ";
+    public static final String UPDATE_DESCR_HANDLE = "Введите новое описание: ";
+    public static final String UPDATE_PRICE_HANDLE = "Введите новую стоймость: ";
+    public static final String UPDATE_FILE_ID_MSG = "Файл изменен!";
     public static final String UPDATE_NAME_MSG = "Название изменено!";
     public static final String UPDATE_DESCRIPTION_MSG = "Описание изменено!";
     public static final String UPDATE_PRICE_MSG = "Стоймость изменена!";

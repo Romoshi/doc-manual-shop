@@ -7,12 +7,18 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.File;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.starter.SpringWebhookBot;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 @Getter
 @Setter
@@ -40,8 +46,7 @@ public class TelegramBot extends SpringWebhookBot {
             if (update.hasCallbackQuery()) {
                 CallbackQuery callbackQuery = update.getCallbackQuery();
                 return callbackHandler.processCallbackQuery(callbackQuery);
-            } else if(update.hasMessage() && update.getMessage().hasText()) {
-
+            } else if(update.hasMessage() || update.getMessage().hasDocument()) {
                 return messageHandler.pendingAction(update.getMessage());
             }
         } catch (Exception ex) {

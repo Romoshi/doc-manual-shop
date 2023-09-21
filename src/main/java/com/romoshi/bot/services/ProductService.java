@@ -29,6 +29,15 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    public Product updateProductFileId(Long productId, String newFileId) {
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product != null) {
+            product.setFileId(newFileId);
+            return productRepository.save(product);
+        }
+        return null;
+    }
+
     public Product updateProductName(Long productId, String newName) {
         Product product = productRepository.findById(productId).orElse(null);
         if (product != null) {

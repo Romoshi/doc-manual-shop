@@ -18,13 +18,15 @@ import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 @Component
 @RequiredArgsConstructor
 public class UpdateNameAction implements Action {
+
     final ProductService productService;
+
     @Override
     public BotApiMethod<?> execute(CallbackQuery callbackQuery, Product product) {
         MessageHandler.pendingAction = ButtonConstant.BUTTON_UPDATE_NAME;
         MessageHandler.pendingUserId = callbackQuery.getMessage().getChatId();
 
-        return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_NAME_MSG_HANDLE);
+        return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_NAME_HANDLE);
     }
 
     @Override

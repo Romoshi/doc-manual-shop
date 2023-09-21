@@ -36,7 +36,7 @@ public class InlineKeyboardMaker {
 
     public InlineKeyboardMarkup getPayButton(int price, String id, boolean isAdmin) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(getButton("Купить за: " + price + "₽", "Price"  + "_" + id));
+        rowList.add(getButton("Купить за: " + price + "₽", "Pay"  + "_" + id));
 
         if(isAdmin) {
             rowList.add(getButton(BotStringConstant.UPDATE_GENERAL_INLINE, "Update"  + "_" + id));
@@ -51,6 +51,7 @@ public class InlineKeyboardMaker {
     public InlineKeyboardMarkup getUpdateButton(String id) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
 
+        rowList.add(getButton(BotStringConstant.UPDATE_FILE_INLINE, "UpdateFile"  + "_" + id));
         rowList.add(getButton(BotStringConstant.UPDATE_NAME_INLINE, "UpdateName"  + "_" + id));
         rowList.add(getButton(BotStringConstant.UPDATE_DESCRIPTION_INLINE, "UpdateDescription"  + "_" + id));
         rowList.add(getButton(BotStringConstant.UPDATE_PRICE_INLINE, "UpdatePrice"  + "_" + id));

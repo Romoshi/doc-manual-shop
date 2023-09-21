@@ -26,7 +26,7 @@ public class UpdateDescriptionAction implements Action {
         MessageHandler.pendingAction = ButtonConstant.BUTTON_UPDATE_DESCR;
         MessageHandler.pendingUserId = callbackQuery.getMessage().getChatId();
 
-        return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_DESCR_MSG_HANDLE);
+        return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_DESCR_HANDLE);
     }
 
     @Override

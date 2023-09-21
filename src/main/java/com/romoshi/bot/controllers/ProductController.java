@@ -32,6 +32,11 @@ public class ProductController {
         productService.deleteProduct(id);
     }
 
+    @PutMapping("/{productId}/fileId")
+    public Product updateProductFileId(@PathVariable Long productId, @RequestParam String newFileId) {
+        return productService.updateProductFileId(productId, newFileId);
+    }
+
     @PutMapping("/{productId}/name")
     public Product updateProductName(@PathVariable Long productId, @RequestParam String newName) {
         return productService.updateProductName(productId, newName);

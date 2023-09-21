@@ -21,6 +21,7 @@ public class AdminService {
 
     public SendMessage addProduct(Message message) {
         Product defaultProduct = new Product();
+        defaultProduct.setFileId(BotStringConstant.DEFAULT_PRODUCT_FILE_ID);
         defaultProduct.setName(BotStringConstant.DEFAULT_PRODUCT_NAME);
         defaultProduct.setDescription(BotStringConstant.DEFAULT_DESCRIPTION);
         defaultProduct.setPrice(BotStringConstant.DEFAULT_PRODUCT_PRICE);
