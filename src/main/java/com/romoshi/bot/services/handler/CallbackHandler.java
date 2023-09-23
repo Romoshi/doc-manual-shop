@@ -16,7 +16,7 @@ import java.util.List;
 public class CallbackHandler {
 
     final ProductService productService;
-    private final ActionFactory actionFactory;
+    final ActionFactory actionFactory;
 
     public BotApiMethod<?> processCallbackQuery(CallbackQuery callbackQuery) {
         String[] data = callbackQuery.getData().split("_");

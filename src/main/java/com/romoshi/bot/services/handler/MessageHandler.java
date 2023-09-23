@@ -4,11 +4,10 @@ import com.romoshi.bot.models.Product;
 import com.romoshi.bot.services.AdminService;
 import com.romoshi.bot.services.AdminUtil;
 import com.romoshi.bot.services.ProductService;
-import com.romoshi.bot.services.UserService;
-import com.romoshi.bot.services.command.callback.Action;
-import com.romoshi.bot.services.command.callback.ActionFactory;
 import com.romoshi.bot.services.command.message.Command;
 import com.romoshi.bot.services.command.message.CommandFactory;
+import com.romoshi.bot.services.command.update.UpdateFactory;
+import com.romoshi.bot.services.command.update.UpdateProduct;
 import com.romoshi.bot.telegram.constant.CommandConstant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,10 +20,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageHandler {
     final ProductService productService;
-    final UserService userService;
 
     private final CommandFactory commandFactory;
-    private final ActionFactory actionFactory;
+    private final UpdateFactory updateFactory;
 
     private final AdminService adminService;
     private final AdminUtil adminUtil;
@@ -52,8 +50,8 @@ public class MessageHandler {
 
             List<Product> products = productService.getAllProducts();
             for(Product product : products) {
-                Action action = actionFactory.createAction(pendingAction);
-                return action.update(message, product);
+                UpdateProduct updateProduct = updateFactory.createUpdate(pendingAction);
+                return updateProduct.update(message, product);
                 }
             }
 

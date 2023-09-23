@@ -16,7 +16,7 @@ public class InlineKeyboardMaker {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
 
         for (Product product : products) {
-            rowList.add(getButton(product.getName(), "_" + product.getId().toString()));
+            rowList.add(getButton(product.getName(), "_" + product.getId()));
         }
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();

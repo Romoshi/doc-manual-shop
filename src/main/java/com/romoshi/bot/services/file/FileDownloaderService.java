@@ -1,8 +1,7 @@
-package com.romoshi.bot.services;
+package com.romoshi.bot.services.file;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.romoshi.bot.config.TelegramConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ public class FileDownloaderService {
     @Value("${bot.token}")
     private String botToken;
 
-    @Value("${bot.save_path}")
+    @Value("${bot.file_path}")
     private String savePath;
 
     public FileDownloaderService(RestTemplate restTemplate) {
@@ -35,13 +34,13 @@ public class FileDownloaderService {
     public void downloadTelegramFile(Document document) {
         try {
             String fileId = document.getFileId();
-            File file = getFile(botToken, fileId);
+            File file = getFile(fileId);
 
             if (file != null) {
                 String filePath = file.getFilePath();
                 String fileUrl = "https://api.telegram.org/file/bot" +
                         botToken + "/" + filePath;
-                saveFileFromUrl(fileUrl, savePath + document.getFileName() + ".pdf");
+                saveFileFromUrl(fileUrl, savePath + document.getFileId() + ".pdf");
             }
         } catch (IOException ex) {
             log.error("Can`t save file.", ex);
@@ -49,7 +48,7 @@ public class FileDownloaderService {
 
     }
 
-    private File getFile(String botToken, String fileId) throws IOException {
+    private File getFile(String fileId) throws IOException {
         String apiUrl = "https://api.telegram.org/bot" + botToken + "/getFile?file_id=" + fileId;
         URL url = new URL(apiUrl);
 

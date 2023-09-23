@@ -10,6 +10,4 @@ public interface Action {
     BotApiMethod<?> execute(CallbackQuery callbackQuery, Product product);
 
     String getActionName();
-
-    BotApiMethod<?> update(Message message, Product product);
 }

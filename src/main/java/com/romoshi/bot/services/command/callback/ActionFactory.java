@@ -23,4 +23,8 @@ public class ActionFactory {
     public Action createAction(String data) {
         return actionMap.getOrDefault(data, null);
     }
+
+    public void clearAction() {
+        actionMap.clear();
+    }
 }

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 public class BotStringConstant {
 
     public static final String START_STRING = "Привет, друг \uD83D\uDC4B \nЧто тебя интересует?";
-    public static final String SALE_STRING = "Товар куплен!";
     public static final String ADD_STRING = "Товар добавлен!";
     public static final String PRODUCT_LIST = "Список товаров:";
     public static final String HAVE_NOT_PRODUCTS = "В магазине пока нет товаров.";
@@ -31,11 +30,11 @@ public class BotStringConstant {
     public static final String DELETE_INLINE = "Удалить товар.";
 
     //Update messages
-    public static final String UPDATE_NAME_FILE_ID_HANDLE = "Отправте новый файл: ";
+    public static final String UPDATE_NAME_FILE_ID_HANDLE = "Отправьте новый файл: ";
     public static final String UPDATE_NAME_HANDLE = "Введите новое имя: ";
     public static final String UPDATE_DESCR_HANDLE = "Введите новое описание: ";
     public static final String UPDATE_PRICE_HANDLE = "Введите новую стоймость: ";
-    public static final String UPDATE_FILE_ID_MSG = "Файл изменен!";
+    public static final String UPDATE_FILE_ID_MSG = "Файл добавлен!";
     public static final String UPDATE_NAME_MSG = "Название изменено!";
     public static final String UPDATE_DESCRIPTION_MSG = "Описание изменено!";
     public static final String UPDATE_PRICE_MSG = "Стоймость изменена!";
