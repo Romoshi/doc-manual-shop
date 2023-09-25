@@ -1,6 +1,5 @@
 package com.romoshi.bot.services.command.callback;
 
-import com.romoshi.bot.models.Product;
 import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import com.romoshi.bot.telegram.constant.ButtonConstant;
@@ -18,13 +17,22 @@ public class DeleteAction implements Action {
     final ProductService productService;
 
     @Override
-    public BotApiMethod<?> execute(CallbackQuery callbackQuery, Product product) {
-        productService.deleteProduct(product.getId());
+    public BotApiMethod<?> execute(CallbackQuery callbackQuery) {
+        String data = callbackQuery.getData();
+        long productId = extractProductId(data);
+
+        productService.deleteProduct(productId);
+
         return sendMsg(callbackQuery.getMessage(), BotStringConstant.DELETE_MESSAGE);
     }
 
     @Override
     public String getActionName() {
         return ButtonConstant.BUTTON_DELETE;
+    }
+
+    private long extractProductId(String data) {
+        String id = data.replace(ButtonConstant.BUTTON_DELETE + "_", "");
+        return Long.parseLong(id);
     }
 }

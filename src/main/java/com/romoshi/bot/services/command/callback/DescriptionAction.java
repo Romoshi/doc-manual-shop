@@ -1,6 +1,5 @@
 package com.romoshi.bot.services.command.callback;
 
-import com.romoshi.bot.models.Product;
 import com.romoshi.bot.services.handler.MessageHandler;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import com.romoshi.bot.telegram.constant.ButtonConstant;
@@ -14,8 +13,8 @@ import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 public class DescriptionAction implements Action {
 
     @Override
-    public BotApiMethod<?> execute(CallbackQuery callbackQuery, Product product) {
-        MessageHandler.pendingAction = ButtonConstant.BUTTON_UPDATE_DESCR;
+    public BotApiMethod<?> execute(CallbackQuery callbackQuery) {
+        MessageHandler.pendingAction = callbackQuery.getData();;
         MessageHandler.pendingUserId = callbackQuery.getMessage().getChatId();
 
         return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_DESCR_HANDLE);

@@ -2,12 +2,15 @@ package com.romoshi.bot.services;
 
 import com.romoshi.bot.models.Product;
 import com.romoshi.bot.repositories.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Slf4j
 public class ProductService {
 
     final ProductRepository productRepository;
@@ -19,6 +22,18 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    public Product getProductById(long productId) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+
+        if (productOptional.isPresent()) {
+            return productOptional.get();
+        } else {
+            log.error("Product is null");
+        }
+
+        return null;
     }
 
     public Product saveProduct(Product product) {

@@ -1,9 +1,7 @@
 package com.romoshi.bot.services.handler;
 
-import com.romoshi.bot.models.Product;
 import com.romoshi.bot.services.AdminService;
 import com.romoshi.bot.services.AdminUtil;
-import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.services.command.message.Command;
 import com.romoshi.bot.services.command.message.CommandFactory;
 import com.romoshi.bot.services.command.update.UpdateFactory;
@@ -14,12 +12,9 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class MessageHandler {
-    final ProductService productService;
 
     private final CommandFactory commandFactory;
     private final UpdateFactory updateFactory;
@@ -47,13 +42,11 @@ public class MessageHandler {
     public BotApiMethod<?> pendingAction(Message message) {
 
         if (pendingAction != null && pendingUserId == message.getChatId()) {
+            String[] data = pendingAction.split("_");
+            UpdateProduct updateProduct = updateFactory.createUpdate(data[0]);
 
-            List<Product> products = productService.getAllProducts();
-            for(Product product : products) {
-                UpdateProduct updateProduct = updateFactory.createUpdate(pendingAction);
-                return updateProduct.update(message, product);
-                }
-            }
+            return updateProduct.update(message);
+        }
 
         return answerMessage(message);
     }

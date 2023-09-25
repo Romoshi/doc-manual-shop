@@ -2,6 +2,7 @@ package com.romoshi.bot.services.command.callback;
 
 import com.romoshi.bot.models.Product;
 import com.romoshi.bot.services.AdminUtil;
+import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.telegram.constant.ButtonConstant;
 import com.romoshi.bot.telegram.keyboards.InlineKeyboardMaker;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,18 @@ import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 @RequiredArgsConstructor
 public class ProductCallbackAction implements Action {
 
+    private final ProductService productService;
     private final InlineKeyboardMaker inlineKeyboardMaker = new InlineKeyboardMaker();
-
     private final AdminUtil adminUtil;
 
     @Override
-    public BotApiMethod<?> execute(CallbackQuery callbackQuery, Product product) {
+    public BotApiMethod<?> execute(CallbackQuery callbackQuery) {
+        String data = callbackQuery.getData();
+
+        long productId = extractProductId(data);
+
+        Product product = productService.getProductById(productId);
+
         String chatId = callbackQuery.getMessage().getChatId().toString();
 
         SendMessage sendMessage = sendMsg(callbackQuery.getMessage(),
@@ -36,5 +43,10 @@ public class ProductCallbackAction implements Action {
     @Override
     public String getActionName() {
         return ButtonConstant.BUTTON;
+    }
+
+    private long extractProductId(String data) {
+        String id = data.replace(ButtonConstant.BUTTON + "_", "");
+        return Long.parseLong(id);
     }
 }

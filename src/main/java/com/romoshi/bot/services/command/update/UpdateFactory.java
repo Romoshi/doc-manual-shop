@@ -21,6 +21,6 @@ public class UpdateFactory {
     }
 
     public UpdateProduct createUpdate(String data) {
-        return updateProductMap.getOrDefault(data, null);
+        return updateProductMap.get(data);
     }
 }

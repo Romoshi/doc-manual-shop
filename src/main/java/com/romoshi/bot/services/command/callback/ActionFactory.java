@@ -1,13 +1,13 @@
 package com.romoshi.bot.services.command.callback;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Component
 public class ActionFactory {
 
     private final Map<String, Action> actionMap;
@@ -21,10 +21,6 @@ public class ActionFactory {
     }
 
     public Action createAction(String data) {
-        return actionMap.getOrDefault(data, null);
-    }
-
-    public void clearAction() {
-        actionMap.clear();
+        return actionMap.get(data);
     }
 }

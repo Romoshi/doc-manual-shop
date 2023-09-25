@@ -2,6 +2,7 @@ package com.romoshi.bot.services.command.update;
 
 import com.romoshi.bot.models.Product;
 import com.romoshi.bot.services.ProductService;
+import com.romoshi.bot.services.handler.MessageHandler;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import com.romoshi.bot.telegram.constant.ButtonConstant;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,12 @@ public class UpdateName implements UpdateProduct {
     final ProductService productService;
 
     @Override
-    public SendMessage update(Message message, Product product) {
+    public SendMessage update(Message message) {
+        long productId = extractProductId(MessageHandler.pendingAction);
+
+        Product product = productService.getProductById(productId);
         productService.updateProductName(product.getId(), message.getText());
+
         pendingSetNull();
         return sendMsg(message, BotStringConstant.UPDATE_NAME_MSG);
     }
@@ -28,5 +33,10 @@ public class UpdateName implements UpdateProduct {
     @Override
     public String getUpdateName() {
         return ButtonConstant.BUTTON_UPDATE_NAME;
+    }
+
+    private long extractProductId(String data) {
+        String id = data.replace(ButtonConstant.BUTTON_UPDATE_NAME + "_", "");
+        return Long.parseLong(id);
     }
 }
