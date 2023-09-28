@@ -1,10 +1,11 @@
 package com.romoshi.bot.controllers;
 
-import com.romoshi.bot.models.Product;
+import com.romoshi.bot.entity.Product;
 import com.romoshi.bot.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -48,7 +49,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}/price")
-    public Product updateProductPrice(@PathVariable Long productId, @RequestParam int newPrice) {
+    public Product updateProductPrice(@PathVariable Long productId, @RequestParam BigDecimal newPrice) {
         return productService.updateProductPrice(productId, newPrice);
     }
 }

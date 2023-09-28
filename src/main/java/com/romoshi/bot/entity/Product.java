@@ -1,9 +1,10 @@
-package com.romoshi.bot.models;
+package com.romoshi.bot.entity;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Setter
 @Getter
@@ -21,5 +22,5 @@ public class Product {
 
     private String description;
 
-    private int price;
+    private BigDecimal price;
 }

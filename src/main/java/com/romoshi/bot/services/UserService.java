@@ -1,6 +1,6 @@
 package com.romoshi.bot.services;
 
-import com.romoshi.bot.models.User;
+import com.romoshi.bot.entity.User;
 import com.romoshi.bot.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

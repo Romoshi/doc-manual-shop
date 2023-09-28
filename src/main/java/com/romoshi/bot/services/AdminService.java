@@ -1,7 +1,7 @@
 package com.romoshi.bot.services;
 
-import com.romoshi.bot.models.Product;
-import com.romoshi.bot.models.User;
+import com.romoshi.bot.entity.Product;
+import com.romoshi.bot.entity.User;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

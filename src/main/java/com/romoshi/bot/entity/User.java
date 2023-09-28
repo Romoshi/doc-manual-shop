@@ -1,4 +1,4 @@
-package com.romoshi.bot.models;
+package com.romoshi.bot.entity;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.romoshi.bot.telegram.keyboards;
 
-import com.romoshi.bot.models.Product;
+import com.romoshi.bot.entity.Product;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -34,14 +34,11 @@ public class InlineKeyboardMaker {
         return keyboardButtonsRow;
     }
 
-    public InlineKeyboardMarkup getPayButton(int price, String id, boolean isAdmin) {
+    public InlineKeyboardMarkup getAdminButton(String id) {
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(getButton("Купить за: " + price + "₽", "Pay"  + "_" + id));
 
-        if(isAdmin) {
-            rowList.add(getButton(BotStringConstant.UPDATE_GENERAL_INLINE, "Update"  + "_" + id));
-            rowList.add(getButton(BotStringConstant.DELETE_INLINE, "Delete"  + "_" + id));
-        }
+        rowList.add(getButton(BotStringConstant.UPDATE_GENERAL_INLINE, "Update"  + "_" + id));
+        rowList.add(getButton(BotStringConstant.DELETE_INLINE, "Delete"  + "_" + id));
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(rowList);

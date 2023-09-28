@@ -1,11 +1,12 @@
 package com.romoshi.bot.services;
 
-import com.romoshi.bot.models.Product;
+import com.romoshi.bot.entity.Product;
 import com.romoshi.bot.repositories.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,7 +72,7 @@ public class ProductService {
         return null;
     }
 
-    public Product updateProductPrice(Long productId, int newPrice) {
+    public Product updateProductPrice(Long productId, BigDecimal newPrice) {
         Product product = productRepository.findById(productId).orElse(null);
         if (product != null) {
             product.setPrice(newPrice);

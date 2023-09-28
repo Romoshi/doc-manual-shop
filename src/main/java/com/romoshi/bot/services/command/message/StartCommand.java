@@ -1,6 +1,6 @@
 package com.romoshi.bot.services.command.message;
 
-import com.romoshi.bot.models.User;
+import com.romoshi.bot.entity.User;
 import com.romoshi.bot.services.AdminUtil;
 import com.romoshi.bot.services.UserService;
 import com.romoshi.bot.telegram.constant.BotStringConstant;

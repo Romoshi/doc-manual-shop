@@ -1,6 +1,6 @@
 package com.romoshi.bot.services.command.update;
 
-import com.romoshi.bot.models.Product;
+import com.romoshi.bot.entity.Product;
 import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.services.handler.MessageHandler;
 import com.romoshi.bot.telegram.constant.BotStringConstant;

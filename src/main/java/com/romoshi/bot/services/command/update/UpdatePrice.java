@@ -1,6 +1,6 @@
 package com.romoshi.bot.services.command.update;
 
-import com.romoshi.bot.models.Product;
+import com.romoshi.bot.entity.Product;
 import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.services.handler.MessageHandler;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
+
+import java.math.BigDecimal;
 
 import static com.romoshi.bot.services.handler.MessageHandler.pendingSetNull;
 import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
@@ -28,7 +30,7 @@ public class UpdatePrice implements UpdateProduct {
 
             Product product = productService.getProductById(productId);
             productService.updateProductPrice(product.getId(),
-                    Integer.parseInt(message.getText()));
+                    BigDecimal.valueOf(Integer.parseInt(message.getText())));
 
             pendingSetNull();
 

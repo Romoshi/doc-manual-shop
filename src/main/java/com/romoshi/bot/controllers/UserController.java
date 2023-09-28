@@ -1,6 +1,6 @@
 package com.romoshi.bot.controllers;
 
-import com.romoshi.bot.models.User;
+import com.romoshi.bot.entity.User;
 import com.romoshi.bot.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
