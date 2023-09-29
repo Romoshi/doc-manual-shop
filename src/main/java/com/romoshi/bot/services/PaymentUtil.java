@@ -2,6 +2,7 @@ package com.romoshi.bot.services;
 
 import com.google.gson.Gson;
 import com.romoshi.bot.entity.Product;
+import com.romoshi.bot.telegram.keyboards.InlineKeyboardMaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -11,11 +12,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.api.methods.invoices.CreateInvoiceLink;
 import org.telegram.telegrambots.meta.api.objects.payments.LabeledPrice;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -25,6 +28,7 @@ public class PaymentUtil {
     private final String botToken;
     private final RestTemplate restTemplate;
     private final Gson gson;
+    private final InlineKeyboardMaker inlineKeyboardMaker = new InlineKeyboardMaker();
 
     public PaymentUtil(RestTemplate restTemplate,
                        @Value("${bot.token}") String botToken,
@@ -54,26 +58,7 @@ public class PaymentUtil {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
 
-
-
-
-
-
-        InlineKeyboardButton button = new InlineKeyboardButton();
-        button.setText("Купить за " + link.getPrices() + " " + link.getCurrency());
-        button.setPay(true);
-
-        List<InlineKeyboardButton> row = new ArrayList<>();
-        row.add(button);
-
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        keyboard.add(row);
-
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        inlineKeyboardMarkup.setKeyboard(keyboard);
-
-
-
+        List<List<InlineKeyboardButton>> keyboard = inlineKeyboardMaker.getPayButton(link);
 
 
         Map<String, Object> requestObject = new HashMap<>();
@@ -84,24 +69,15 @@ public class PaymentUtil {
         requestObject.put("provider_token", link.getProviderToken());
         requestObject.put("currency", link.getCurrency());
         requestObject.put("prices", link.getPrices());
-        requestObject.put("reply_markup", inlineKeyboardMarkup);
+        requestObject.put("reply_markup", Map.of("inline_keyboard", keyboard));
         requestObject.put("protect_content", true);
 
         String requestBody = gson.toJson(requestObject);
 
         HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
 
-       // ResponseEntity<String> responseEntity =
-                restTemplate.postForEntity(
+        restTemplate.postForEntity(
                 sendInvoiceUrl,
                 requestEntity, Object.class);
-
-//        if (responseEntity.getStatusCode().is2xxSuccessful()) {
-//            return responseEntity.getBody();
-//        } else {
-//            log.error("Ошибка при создании счета");
-//        }
-//
-//        return null;
     }
 }
