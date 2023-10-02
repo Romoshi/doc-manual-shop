@@ -1,5 +1,8 @@
 package com.romoshi.bot.telegram.constant;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class ButtonConstant {
 
     public static final String BUTTON = "button";

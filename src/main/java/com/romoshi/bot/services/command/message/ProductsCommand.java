@@ -5,7 +5,7 @@ import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import com.romoshi.bot.telegram.constant.CommandConstant;
 import com.romoshi.bot.telegram.keyboards.InlineKeyboardMaker;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -16,12 +16,16 @@ import java.util.List;
 import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 
 @Component
-@RequiredArgsConstructor
 public class ProductsCommand implements Command {
 
-    final ProductService productService;
-    InlineKeyboardMaker inlineKeyboardMaker = new InlineKeyboardMaker();
+    private final ProductService productService;
+    private final InlineKeyboardMaker inlineKeyboardMaker;
 
+    @Autowired
+    public ProductsCommand(ProductService productService) {
+        this.productService = productService;
+        this.inlineKeyboardMaker = new InlineKeyboardMaker();
+    }
     @Override
     public BotApiMethod<?> execute(Message message) {
         List<Product> products = productService.getAllProducts();

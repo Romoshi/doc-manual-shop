@@ -3,7 +3,7 @@ package com.romoshi.bot.services;
 import com.romoshi.bot.entity.Product;
 import com.romoshi.bot.entity.User;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -13,11 +13,16 @@ import java.util.List;
 import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 
 @Service
-@RequiredArgsConstructor
 public class AdminService {
 
-    final ProductService productService;
-    final UserService userService;
+    private final ProductService productService;
+    private final UserService userService;
+
+    @Autowired
+    public AdminService(ProductService productService, UserService userService) {
+        this.productService = productService;
+        this.userService = userService;
+    }
 
     public SendMessage addProduct(Message message) {
         Product defaultProduct = new Product();

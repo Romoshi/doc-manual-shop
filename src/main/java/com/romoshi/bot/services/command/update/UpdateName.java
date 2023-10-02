@@ -6,6 +6,7 @@ import com.romoshi.bot.services.handler.MessageHandler;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import com.romoshi.bot.telegram.constant.ButtonConstant;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -14,10 +15,14 @@ import static com.romoshi.bot.services.handler.MessageHandler.pendingSetNull;
 import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 
 @Component
-@RequiredArgsConstructor
 public class UpdateName implements UpdateProduct {
 
-    final ProductService productService;
+    private final ProductService productService;
+
+    @Autowired
+    public UpdateName(ProductService productService) {
+        this.productService = productService;
+    }
 
     @Override
     public SendMessage update(Message message) {

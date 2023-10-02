@@ -22,9 +22,9 @@ public class TelegramBot extends SpringWebhookBot {
     private String botPath;
     private String botUsername;
 
-    private MessageHandler messageHandler;
-    private CallbackHandler callbackHandler;
-    private PreCheckoutHandler preCheckoutHandler;
+    private final MessageHandler messageHandler;
+    private final CallbackHandler callbackHandler;
+    private final PreCheckoutHandler preCheckoutHandler;
 
     public TelegramBot(SetWebhook setWebhook, String botToken, MessageHandler messageHandler,
                        CallbackHandler callbackHandler, PreCheckoutHandler preCheckoutHandler) {

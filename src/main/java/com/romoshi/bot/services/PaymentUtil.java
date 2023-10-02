@@ -28,7 +28,7 @@ public class PaymentUtil {
     private final String botToken;
     private final RestTemplate restTemplate;
     private final Gson gson;
-    private final InlineKeyboardMaker inlineKeyboardMaker = new InlineKeyboardMaker();
+    private final InlineKeyboardMaker inlineKeyboardMaker;
 
     public PaymentUtil(RestTemplate restTemplate,
                        @Value("${bot.token}") String botToken,
@@ -37,6 +37,7 @@ public class PaymentUtil {
         this.botToken = botToken;
         this.providerToken = providerToken;
         this.gson = new Gson();
+        this.inlineKeyboardMaker = new InlineKeyboardMaker();
     }
 
     public void createUrl(Product product, String chatId) {
@@ -58,7 +59,7 @@ public class PaymentUtil {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
 
-        List<List<InlineKeyboardButton>> keyboard = inlineKeyboardMaker.getPayButton(link);
+        List<List<InlineKeyboardButton>> keyboard = inlineKeyboardMaker.getPayButton();
 
 
         Map<String, Object> requestObject = new HashMap<>();

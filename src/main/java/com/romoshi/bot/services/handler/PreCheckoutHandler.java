@@ -1,6 +1,5 @@
 package com.romoshi.bot.services.handler;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -9,7 +8,6 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.payments.PreCheckoutQuery;
 
 @Service
-@RequiredArgsConstructor
 public class PreCheckoutHandler {
 
     @Value("${bot.token}")

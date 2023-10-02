@@ -6,7 +6,7 @@ import com.romoshi.bot.services.file.FileDownloaderService;
 import com.romoshi.bot.services.handler.MessageHandler;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import com.romoshi.bot.telegram.constant.ButtonConstant;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -15,11 +15,17 @@ import static com.romoshi.bot.services.handler.MessageHandler.pendingSetNull;
 import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 
 @Component
-@RequiredArgsConstructor
 public class UpdateFileId implements UpdateProduct {
 
-    final ProductService productService;
-    final FileDownloaderService fileDownloaderService;
+    private final ProductService productService;
+    private final FileDownloaderService fileDownloaderService;
+
+    @Autowired
+    public UpdateFileId(ProductService productService,
+                        FileDownloaderService fileDownloaderService) {
+        this.productService = productService;
+        this.fileDownloaderService =  fileDownloaderService;
+    }
 
     @Override
     public BotApiMethod<?> update(Message message) {

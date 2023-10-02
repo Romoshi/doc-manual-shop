@@ -1,42 +1,41 @@
 package com.romoshi.bot.services.handler;
 
-import com.romoshi.bot.entity.Product;
 import com.romoshi.bot.services.AdminService;
 import com.romoshi.bot.services.AdminUtil;
 import com.romoshi.bot.services.PaymentService;
-import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.services.command.message.Command;
 import com.romoshi.bot.services.command.message.CommandFactory;
 import com.romoshi.bot.services.command.update.UpdateFactory;
 import com.romoshi.bot.services.command.update.UpdateProduct;
-import com.romoshi.bot.services.file.FileSenderService;
-import com.romoshi.bot.telegram.constant.BotStringConstant;
 import com.romoshi.bot.telegram.constant.CommandConstant;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.payments.SuccessfulPayment;
-
-import java.math.BigDecimal;
-
-import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class MessageHandler {
 
     private final PaymentService paymentService;
-    private final ProductService productService;
-    private final FileSenderService fileSenderService;
 
     private final CommandFactory commandFactory;
     private final UpdateFactory updateFactory;
 
     private final AdminService adminService;
     private final AdminUtil adminUtil;
+
+    @Autowired
+    public MessageHandler(PaymentService paymentService, CommandFactory commandFactory,
+                          UpdateFactory updateFactory, AdminService adminService,
+                          AdminUtil adminUtil) {
+        this.paymentService = paymentService;
+        this.commandFactory = commandFactory;
+        this.updateFactory = updateFactory;
+        this.adminService = adminService;
+        this.adminUtil = adminUtil;
+    }
 
     public static String pendingAction = null;
     public static long pendingUserId = 0;
@@ -58,7 +57,7 @@ public class MessageHandler {
     public BotApiMethod<?> pendingAction(Message message) {
 
         if(message.hasSuccessfulPayment()) {
-            return pay(message);
+            return paymentService.pay(message);
         }
 
         if (pendingAction != null && pendingUserId == message.getChatId()) {
@@ -76,24 +75,5 @@ public class MessageHandler {
         pendingUserId = 0;
     }
 
-    private BotApiMethod<?> pay(Message message) {
-        SuccessfulPayment successfulPayment = message.getSuccessfulPayment();
 
-        paymentService.savePaymentInfo(successfulPayment.getTelegramPaymentChargeId(),
-                BigDecimal.valueOf(successfulPayment.getTotalAmount()),
-                successfulPayment.getCurrency());
-
-        String chatId = message.getChatId().toString();
-
-        Product product = productService.getProductById(Long.parseLong(successfulPayment.getInvoicePayload()));
-
-        try {
-            fileSenderService.sendFileToChat(chatId, product.getFileId());
-            return sendMsg(message, BotStringConstant.SALE_STRING);
-        } catch (NullPointerException ex) {
-            log.error("Файл не найден", ex);
-        }
-
-        return null;
-    }
 }
