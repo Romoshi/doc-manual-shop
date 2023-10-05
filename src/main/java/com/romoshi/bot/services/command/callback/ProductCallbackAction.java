@@ -1,8 +1,8 @@
 package com.romoshi.bot.services.command.callback;
 
 import com.romoshi.bot.entity.Product;
-import com.romoshi.bot.services.AdminUtil;
-import com.romoshi.bot.services.PaymentUtil;
+import com.romoshi.bot.services.utils.AdminUtil;
+import com.romoshi.bot.services.utils.PaymentUtil;
 import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.telegram.constant.ButtonConstant;
 import com.romoshi.bot.telegram.keyboards.InlineKeyboardMaker;

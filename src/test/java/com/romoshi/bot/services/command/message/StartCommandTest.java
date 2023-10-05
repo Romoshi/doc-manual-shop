@@ -1,6 +1,6 @@
 package com.romoshi.bot.services.command.message;
 
-import com.romoshi.bot.services.AdminUtil;
+import com.romoshi.bot.services.utils.AdminUtil;
 import com.romoshi.bot.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

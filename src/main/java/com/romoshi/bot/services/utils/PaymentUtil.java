@@ -1,4 +1,4 @@
-package com.romoshi.bot.services;
+package com.romoshi.bot.services.utils;
 
 import com.google.gson.Gson;
 import com.romoshi.bot.entity.Product;

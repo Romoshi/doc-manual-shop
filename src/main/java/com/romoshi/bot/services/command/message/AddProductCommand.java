@@ -1,7 +1,7 @@
 package com.romoshi.bot.services.command.message;
 
 import com.romoshi.bot.services.AdminService;
-import com.romoshi.bot.services.AdminUtil;
+import com.romoshi.bot.services.utils.AdminUtil;
 import com.romoshi.bot.telegram.constant.CommandConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,13 +1,10 @@
 package com.romoshi.bot.services.handler;
 
-import com.romoshi.bot.services.AdminService;
-import com.romoshi.bot.services.AdminUtil;
 import com.romoshi.bot.services.PaymentService;
 import com.romoshi.bot.services.command.message.Command;
 import com.romoshi.bot.services.command.message.CommandFactory;
 import com.romoshi.bot.services.command.update.UpdateFactory;
 import com.romoshi.bot.services.command.update.UpdateProduct;
-import com.romoshi.bot.telegram.constant.CommandConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
