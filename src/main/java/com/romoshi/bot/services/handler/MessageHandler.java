@@ -23,18 +23,12 @@ public class MessageHandler {
     private final CommandFactory commandFactory;
     private final UpdateFactory updateFactory;
 
-    private final AdminService adminService;
-    private final AdminUtil adminUtil;
-
     @Autowired
     public MessageHandler(PaymentService paymentService, CommandFactory commandFactory,
-                          UpdateFactory updateFactory, AdminService adminService,
-                          AdminUtil adminUtil) {
+                          UpdateFactory updateFactory) {
         this.paymentService = paymentService;
         this.commandFactory = commandFactory;
         this.updateFactory = updateFactory;
-        this.adminService = adminService;
-        this.adminUtil = adminUtil;
     }
 
     public static String pendingAction = null;
@@ -42,13 +36,6 @@ public class MessageHandler {
 
     public BotApiMethod<?> answerMessage(Message message) {
         String messageText = message.getText();
-        String chatId = message.getChatId().toString();
-
-        if(adminUtil.isAdmin(chatId)) {
-            if(messageText.equals(CommandConstant.ADD_COMMAND)) {
-                return adminService.addProduct(message);
-            }
-        }
 
         Command command = commandFactory.createCommand(messageText);
         return command.execute(message);
