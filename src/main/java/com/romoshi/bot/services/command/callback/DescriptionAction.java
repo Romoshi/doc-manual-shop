@@ -14,8 +14,7 @@ public class DescriptionAction implements Action {
 
     @Override
     public BotApiMethod<?> execute(CallbackQuery callbackQuery) {
-        MessageHandler.pendingAction = callbackQuery.getData();;
-        MessageHandler.pendingUserId = callbackQuery.getMessage().getChatId();
+        MessageHandler.pendingAction = callbackQuery.getData();
 
         return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_DESCR_HANDLE);
     }

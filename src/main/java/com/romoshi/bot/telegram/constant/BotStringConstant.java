@@ -13,7 +13,7 @@ public class BotStringConstant {
     public static final String PRODUCT_LIST = "Список товаров:";
     public static final String HAVE_NOT_PRODUCTS = "В магазине пока нет товаров.";
     public static final String SITE_STRING = "https://doctor-dyorina.tilda.ws/";
-    public static final String DEFAULT_STRING = "Извини, к сожалению я не знаю, что с этим делать \uD83E\uDEE0";
+    public static final String DEFAULT_STRING = "Извини, к сожалению, я не знаю, что с этим делать \uD83E\uDEE0";
     public static final String NOTIFICATION_STRING = "Дорогой друг! У меня появился новый товар! \uD83C\uDF89";
 
     //Default info product button.

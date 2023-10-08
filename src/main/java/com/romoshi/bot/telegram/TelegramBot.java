@@ -3,13 +3,13 @@ package com.romoshi.bot.telegram;
 import com.romoshi.bot.services.handler.CallbackHandler;
 import com.romoshi.bot.services.handler.MessageHandler;
 import com.romoshi.bot.services.handler.PreCheckoutHandler;
+import com.romoshi.bot.telegram.constant.BotStringConstant;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
-import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.starter.SpringWebhookBot;
@@ -38,10 +38,9 @@ public class TelegramBot extends SpringWebhookBot {
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
         try {
             if (update.hasCallbackQuery()) {
-                CallbackQuery callbackQuery = update.getCallbackQuery();
-                return callbackHandler.processCallbackQuery(callbackQuery);
+                return callbackHandler.processCallbackQuery(update.getCallbackQuery());
             } else if(update.hasMessage()) {
-                return messageHandler.pendingAction(update.getMessage());
+                return messageHandler.processMessage(update.getMessage());
             } else if(update.hasPreCheckoutQuery()) {
                 return preCheckoutHandler.processPreCheckOut(update.getPreCheckoutQuery());
             }
@@ -49,7 +48,7 @@ public class TelegramBot extends SpringWebhookBot {
             log.error("Update error", ex);
         }
 
-        return null;
+        return sendMsg(update.getMessage(), BotStringConstant.DEFAULT_STRING);
     }
 
     public static SendMessage sendMsg(Message message, String text) {

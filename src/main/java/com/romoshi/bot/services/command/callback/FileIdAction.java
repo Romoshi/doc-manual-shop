@@ -15,7 +15,6 @@ public class FileIdAction implements Action {
     @Override
     public BotApiMethod<?> execute(CallbackQuery callbackQuery) {
         MessageHandler.pendingAction = callbackQuery.getData();;
-        MessageHandler.pendingUserId = callbackQuery.getMessage().getChatId();
 
         return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_NAME_FILE_ID_HANDLE);
     }
