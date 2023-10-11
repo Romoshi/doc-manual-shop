@@ -47,6 +47,7 @@ public class StartCommand implements Command {
         return sendMessage;
     }
 
+    @Override
     public String getCommandName() {
         return CommandConstant.START_COMMAND;
     }

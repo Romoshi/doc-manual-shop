@@ -14,7 +14,10 @@ public class NameAction implements Action {
 
     @Override
     public BotApiMethod<?> execute(CallbackQuery callbackQuery) {
-        MessageHandler.pendingAction = callbackQuery.getData();
+        String chatId = callbackQuery.getMessage().getChatId().toString();
+        String action = callbackQuery.getData();
+
+        MessageHandler.userContextHolder.updateUserContext(chatId, action);
 
         return sendMsg(callbackQuery.getMessage(), BotStringConstant.UPDATE_NAME_HANDLE);
     }

@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class UserContext {
 
-    private String userId;
     private String currentState;
+    private String action;
 }

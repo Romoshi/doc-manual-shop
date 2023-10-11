@@ -4,7 +4,6 @@ import com.romoshi.bot.entity.Product;
 import com.romoshi.bot.services.ProductService;
 import com.romoshi.bot.services.handler.MessageHandler;
 import com.romoshi.bot.session.UserContext;
-import com.romoshi.bot.session.UserContextHolder;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import com.romoshi.bot.telegram.constant.ButtonConstant;
 import lombok.extern.slf4j.Slf4j;
@@ -31,16 +30,18 @@ public class UpdatePrice implements UpdateProduct {
     @Override
     public SendMessage update(Message message) {
         try {
-            UserContext userContext = MessageHandler.userContextHolder.getUserContext();
+            String chatId = message.getChatId().toString();
 
-            long productId = extractProductId(userContext.getCurrentState());
+            UserContext userContext = MessageHandler.userContextHolder.getUserContext(chatId);
+
+            long productId = extractProductId(userContext.getAction());
             Integer.parseInt(message.getText());
 
             Product product = productService.getProductById(productId);
             productService.updateProductPrice(product.getId(),
                     BigDecimal.valueOf(Integer.parseInt(message.getText())));
 
-            //userContextHolder.clearUserContext();
+            MessageHandler.userContextHolder.clearActionUserContext(chatId);
 
             return sendMsg(message, BotStringConstant.UPDATE_PRICE_MSG);
         } catch (NumberFormatException e) {
