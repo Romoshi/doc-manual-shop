@@ -61,7 +61,6 @@ public class PaymentUtil {
 
         List<List<InlineKeyboardButton>> keyboard = inlineKeyboardMaker.getPayButton();
 
-
         Map<String, Object> requestObject = new HashMap<>();
         requestObject.put("chat_id", chatId);
         requestObject.put("title", link.getTitle());

@@ -5,10 +5,13 @@ plugins {
 }
 
 group = 'com.romoshi'
-version = '0.0.1-SNAPSHOT'
+version = '1.0-RELEASE'
 
-java {
-	sourceCompatibility = '17'
+bootJar {
+	archiveFileName = 'bot.jar'
+	manifest {
+		attributes 'Start-Class': 'com.romoshi.bot.BotStarter'
+	}
 }
 
 configurations {
@@ -27,9 +30,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 	implementation 'org.postgresql:postgresql'
-	implementation 'org.liquibase:liquibase-core:4.23.2'
+	implementation 'org.liquibase:liquibase-core'
 
-	implementation 'com.google.code.gson:gson:2.10.1'
+	implementation 'com.google.code.gson:gson'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
