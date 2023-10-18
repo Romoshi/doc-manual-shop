@@ -140,3 +140,9 @@ gradle-app.setting
 
 #properties
 src/main/resources/*.properties
+.env
+
+#other
+prop
+db-data
+files

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminUtil {
 
-    @Value("${developId}")
+    @Value("${adminId}")
     private String adminID;
 
     public boolean isAdmin(String chatId) {

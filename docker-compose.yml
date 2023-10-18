@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+
+  #Spring service
+  app:
+    image: bot-shop
+    restart: on-failure
+    container_name: app
+    environment:
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./prop:/app/src/main/resources/application.properties
+      - ./files:/app/src/main/resources/static/files/
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  #Database service
+  db:
+    image: postgres:15.4
+    restart: on-failure
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./infrastructure/db/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+      - ./db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    name: app-network
+    driver: bridge
+
+#Volumes
+volumes:
+  db-data:
+  prop:
+  files:

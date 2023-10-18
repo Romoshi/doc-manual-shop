@@ -34,8 +34,8 @@ public class PaymentUtil {
                        @Value("${bot.token}") String botToken,
                        @Value("${payment.token}") String providerToken) {
         this.restTemplate = restTemplate;
-        this.botToken = botToken;
         this.providerToken = providerToken;
+        this.botToken = botToken;
         this.gson = new Gson();
         this.inlineKeyboardMaker = new InlineKeyboardMaker();
     }

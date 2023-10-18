@@ -45,14 +45,12 @@ public class MessageHandler {
 
         if(message.hasSuccessfulPayment()) {
             return paymentService.pay(message);
-        }
-        else if(Objects.equals(state, "admin") && action != null) {
+        } else if(Objects.equals(state, "admin") && action != null) {
             String[] data = action.split("_");
 
             UpdateProduct updateProduct = updateFactory.createUpdate(data[0]);
             return updateProduct.update(message);
-        }
-        else {
+        } else {
             Command command = commandFactory.createCommand(message.getText());
             return command.execute(message);
         }
