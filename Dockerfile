@@ -7,8 +7,12 @@ FROM openjdk:17
 WORKDIR /app
 
 COPY --from=build /app/build/libs/*.jar /app
-COPY --from=build /app/src/main/resources/*.properties /app
-COPY --from=build /app/src/main/resources/static/files/*.pdf /app
+
+#ВАРИАНТ 1.
+COPY --from=build /app/src/main/resources/*.properties /app/prop
+#ВАРИАНТ 2.
+#COPY --from=build /app/build/resources/*.properties /app
+COPY --from=build /app/src/main/resources/static/files/*.pdf /app/files
 
 EXPOSE 5000
 

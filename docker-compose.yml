@@ -16,8 +16,8 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./prop:/app/src/main/resources/application.properties
-      - ./files:/app/src/main/resources/static/files/
+      - ./prop:/prop
+      - ./files:/files
     depends_on:
       db:
         condition: service_healthy

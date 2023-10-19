@@ -1,6 +1,5 @@
 package com.romoshi.bot.services.handler;
 
-import com.romoshi.bot.services.PaymentService;
 import com.romoshi.bot.services.command.message.Command;
 import com.romoshi.bot.services.command.message.CommandFactory;
 import com.romoshi.bot.services.command.update.UpdateFactory;
@@ -20,7 +19,6 @@ import java.util.Objects;
 @Slf4j
 public class MessageHandler {
 
-    private final PaymentService paymentService;
     private final AdminUtil adminUtil;
 
     private final CommandFactory commandFactory;
@@ -29,9 +27,8 @@ public class MessageHandler {
     public static UserContextHolder userContextHolder = new UserContextHolder();
 
     @Autowired
-    public MessageHandler(PaymentService paymentService, CommandFactory commandFactory,
-                          UpdateFactory updateFactory, AdminUtil adminUtil) {
-        this.paymentService = paymentService;
+    public MessageHandler(CommandFactory commandFactory, UpdateFactory updateFactory,
+                          AdminUtil adminUtil) {
         this.commandFactory = commandFactory;
         this.updateFactory = updateFactory;
         this.adminUtil = adminUtil;
@@ -43,9 +40,7 @@ public class MessageHandler {
         String state = userContext.getCurrentState();
         String action = userContext.getAction();
 
-        if(message.hasSuccessfulPayment()) {
-            return paymentService.pay(message);
-        } else if(Objects.equals(state, "admin") && action != null) {
+        if(Objects.equals(state, "admin") && action != null) {
             String[] data = action.split("_");
 
             UpdateProduct updateProduct = updateFactory.createUpdate(data[0]);

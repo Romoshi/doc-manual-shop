@@ -2,6 +2,7 @@ package com.romoshi.bot.telegram;
 
 import com.romoshi.bot.services.handler.CallbackHandler;
 import com.romoshi.bot.services.handler.MessageHandler;
+import com.romoshi.bot.services.handler.PaymentHandler;
 import com.romoshi.bot.services.handler.PreCheckoutHandler;
 import com.romoshi.bot.telegram.constant.BotStringConstant;
 import lombok.Getter;
@@ -25,13 +26,16 @@ public class TelegramBot extends SpringWebhookBot {
     private final MessageHandler messageHandler;
     private final CallbackHandler callbackHandler;
     private final PreCheckoutHandler preCheckoutHandler;
+    private final PaymentHandler paymentHandler;
 
     public TelegramBot(SetWebhook setWebhook, String botToken, MessageHandler messageHandler,
-                       CallbackHandler callbackHandler, PreCheckoutHandler preCheckoutHandler) {
+                       CallbackHandler callbackHandler, PreCheckoutHandler preCheckoutHandler,
+                       PaymentHandler paymentHandler) {
         super(setWebhook, botToken);
         this.messageHandler = messageHandler;
         this.callbackHandler = callbackHandler;
         this.preCheckoutHandler = preCheckoutHandler;
+        this.paymentHandler = paymentHandler;
     }
 
     @Override
@@ -43,6 +47,8 @@ public class TelegramBot extends SpringWebhookBot {
                 return messageHandler.processMessage(update.getMessage());
             } else if(update.hasPreCheckoutQuery()) {
                 return preCheckoutHandler.processPreCheckOut(update.getPreCheckoutQuery());
+            } else if(update.getMessage().hasSuccessfulPayment()) {
+                return paymentHandler.processPayment(update.getMessage());
             }
         } catch (Exception ex) {
             log.error("Update error", ex);
