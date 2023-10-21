@@ -1,10 +1,6 @@
 package com.romoshi.bot.telegram;
 
-import com.romoshi.bot.services.handler.CallbackHandler;
-import com.romoshi.bot.services.handler.MessageHandler;
-import com.romoshi.bot.services.handler.PaymentHandler;
-import com.romoshi.bot.services.handler.PreCheckoutHandler;
-import com.romoshi.bot.telegram.constant.BotStringConstant;
+import com.romoshi.bot.services.handler.UpdateHandler;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -23,38 +19,22 @@ public class TelegramBot extends SpringWebhookBot {
     private String botPath;
     private String botUsername;
 
-    private final MessageHandler messageHandler;
-    private final CallbackHandler callbackHandler;
-    private final PreCheckoutHandler preCheckoutHandler;
-    private final PaymentHandler paymentHandler;
+    private final UpdateHandler updateHandler;
 
-    public TelegramBot(SetWebhook setWebhook, String botToken, MessageHandler messageHandler,
-                       CallbackHandler callbackHandler, PreCheckoutHandler preCheckoutHandler,
-                       PaymentHandler paymentHandler) {
+    public TelegramBot(SetWebhook setWebhook, String botToken, UpdateHandler updateHandler) {
         super(setWebhook, botToken);
-        this.messageHandler = messageHandler;
-        this.callbackHandler = callbackHandler;
-        this.preCheckoutHandler = preCheckoutHandler;
-        this.paymentHandler = paymentHandler;
+        this.updateHandler = updateHandler;
     }
 
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
         try {
-            if (update.hasCallbackQuery()) {
-                return callbackHandler.processCallbackQuery(update.getCallbackQuery());
-            } else if(update.hasMessage()) {
-                return messageHandler.processMessage(update.getMessage());
-            } else if(update.hasPreCheckoutQuery()) {
-                return preCheckoutHandler.processPreCheckOut(update.getPreCheckoutQuery());
-            } else if(update.getMessage().hasSuccessfulPayment()) {
-                return paymentHandler.processPayment(update.getMessage());
-            }
+            return updateHandler.updateProcess(update);
         } catch (Exception ex) {
             log.error("Update error", ex);
         }
 
-        return sendMsg(update.getMessage(), BotStringConstant.DEFAULT_STRING);
+        return null;
     }
 
     public static SendMessage sendMsg(Message message, String text) {
