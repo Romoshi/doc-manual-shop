@@ -1,11 +1,5 @@
 <p align="center">
-      <img src="Project Logo Url" width="726">
-</p>
-
-<p align="center">
-   <img src="" alt="Version">
-   <img src="" alt="Version">
-   <img src="" alt="License">
+      <img src="https://i.ibb.co/GckZFMZ/free-sticker-feedback-5547555.png" alt="logo" width="226">
 </p>
 
 ## About
