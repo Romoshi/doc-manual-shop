@@ -143,6 +143,5 @@ src/main/resources/*.properties
 .env
 
 #other
-prop
 db-data
-files
+app-resources

@@ -16,7 +16,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./app-resources:/src/main/resources/
+      - ./app-resources:/app/resources
     depends_on:
       db:
         condition: service_healthy

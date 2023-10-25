@@ -6,11 +6,9 @@ RUN ./gradlew bootJar
 FROM openjdk:17
 WORKDIR /app
 
-#RUN mkdir prop
+RUN mkdir /app/resources
 
 COPY --from=build /app/build/libs/*.jar /app/
-#COPY --from=build /app/src/main/resources/*.properties /app/prop/
-
-EXPOSE 5000
+COPY --from=build /app/src/main/resources/* /app/resources/
 
 ENTRYPOINT ["java", "-jar", "/app/bot.jar"]
