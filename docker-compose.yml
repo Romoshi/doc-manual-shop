@@ -14,7 +14,7 @@ services:
     env_file:
       - .env
     ports:
-      - "5000:5000"
+      - "8080:8080"
     volumes:
       - ./app-resources:/app/resources
     depends_on:
@@ -45,6 +45,20 @@ services:
     volumes:
       - ./infrastructure/db/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
       - ./db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  #Web service
+  nginx:
+    image: nginx:1.25
+    restart: on-failure
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./ssl/derinvpsbot.crt:/etc/nginx/derinvpsbot.crt
+      - ./ssl/derinvpsbot.key:/etc/nginx/derinvpsbot.key
     networks:
       - app-network
 

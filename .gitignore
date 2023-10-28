@@ -145,3 +145,4 @@ src/main/resources/*.properties
 #other
 db-data
 app-resources
+ssl
