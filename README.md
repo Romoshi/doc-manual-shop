@@ -4,10 +4,12 @@
 
 ## About
 
-About Text Here
+This bot can sale your digital product.
 
 ## Developers
 
 - [Romoshi](https://github.com/Romoshi)
 
 ## License
+
+MIT license
