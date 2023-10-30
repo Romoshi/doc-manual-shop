@@ -49,18 +49,18 @@ services:
       - app-network
 
   #Web service
- # nginx:
- #   image: nginx:1.25
-  #  restart: on-failure
-   # container_name: nginx
-    #ports:
-     # - "80:80"
-      #- "443:443"
-    #volumes:
-    #  - ./ssl/derinvpsbot.crt:/etc/nginx/derinvpsbot.crt
-    #  - ./ssl/derinvpsbot.key:/etc/nginx/derinvpsbot.key
-    #networks:
-    #  - app-network
+  nginx:
+    image: nginx:1.25
+    restart: on-failure
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./ssl/derinvpsbot.crt:/etc/nginx/derinvpsbot.crt
+      - ./ssl/derinvpsbot.key:/etc/nginx/derinvpsbot.key
+    networks:
+      - app-network
 
 #Docker Networks
 networks:

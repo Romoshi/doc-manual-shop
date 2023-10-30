@@ -8,7 +8,6 @@ FROM openjdk:17
 WORKDIR /app
 
 RUN mkdir -p /app/resources
-RUN mkdir -p /app/resources/files
 
 COPY --from=build /app/build/libs/*.jar /app/
 COPY --from=build /app/src/main/resources/* /app/resources/
