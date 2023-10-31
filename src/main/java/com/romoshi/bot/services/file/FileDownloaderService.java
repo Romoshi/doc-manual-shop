@@ -46,10 +46,11 @@ public class FileDownloaderService {
                 String fileUrl = "https://api.telegram.org/file/bot" +
                         botToken + "/" + filePath;
                 saveFileFromUrl(fileUrl, savePath + document.getFileId() + ".pdf");
+            } else {
+                log.error("File not found.");
             }
-        } catch (IOException ex) {
-            log.error("Can`t save file.", ex);
-        } catch (NullPointerException ex) {
+        } catch (Exception ex) {
+            log.error("Can`t save file.");
             sendMsg(message, BotStringConstant.NOT_FILE);
         }
 
