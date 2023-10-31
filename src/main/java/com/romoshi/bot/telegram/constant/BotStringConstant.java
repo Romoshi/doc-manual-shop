@@ -14,8 +14,8 @@ public class BotStringConstant {
     public static final String HAVE_NOT_PRODUCTS = "В магазине пока нет товаров.";
     public static final String SITE_STRING = "https://doctor-dyorina.tilda.ws/";
     public static final String DEFAULT_STRING = "Извини, к сожалению, я не знаю, что с этим делать \uD83E\uDEE0";
-    public static final String NOT_FILE = "Это не то что я жду. Пришлите, пожалуйста, файл с расшрением pdf :)";
-
+    public static final String NOT_FILE = "Это не то что я жду. Попробуйте заново. Мне нужен файл с расшрением pdf :)";
+    public static final String FILE_CANT_FOUND = "Файл отсутствует.";
     //Default info product button.
     public static final String DEFAULT_PRODUCT_FILE_ID = "null";
     public static final String DEFAULT_PRODUCT_NAME = "Название товара";

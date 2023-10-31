@@ -51,9 +51,7 @@ public class FileDownloaderService {
             }
         } catch (Exception ex) {
             log.error("Can`t save file.");
-            sendMsg(message, BotStringConstant.NOT_FILE);
         }
-
     }
 
     private File getFile(String fileId) throws IOException {

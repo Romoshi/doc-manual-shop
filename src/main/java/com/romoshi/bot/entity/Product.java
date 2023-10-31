@@ -17,10 +17,7 @@ public class Product {
     private Long id;
 
     private String fileId;
-
     private String name;
-
     private String description;
-
     private BigDecimal price;
 }

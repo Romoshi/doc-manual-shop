@@ -29,9 +29,9 @@ public class UpdatePrice implements UpdateProduct {
 
     @Override
     public SendMessage update(Message message) {
-        try {
-            String chatId = message.getChatId().toString();
+        String chatId = message.getChatId().toString();
 
+        try {
             UserContext userContext = MessageHandler.userContextHolder.getUserContext(chatId);
 
             long productId = extractProductId(userContext.getAction());
@@ -41,11 +41,11 @@ public class UpdatePrice implements UpdateProduct {
             productService.updateProductPrice(product.getId(),
                     BigDecimal.valueOf(Integer.parseInt(message.getText())));
 
-            MessageHandler.userContextHolder.clearActionUserContext(chatId);
-
             return sendMsg(message, BotStringConstant.UPDATE_PRICE_MSG);
         } catch (NumberFormatException e) {
             return sendMsg(message, "Введите, пожалуйста, число.");
+        } finally {
+            MessageHandler.userContextHolder.clearActionUserContext(chatId);
         }
     }
 

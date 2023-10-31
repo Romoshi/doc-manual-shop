@@ -31,19 +31,23 @@ public class UpdateFileId implements UpdateProduct {
     public BotApiMethod<?> update(Message message) {
         String chatId = message.getChatId().toString();
 
-        fileDownloaderService.downloadTelegramFile(message);
+        try {
+            fileDownloaderService.downloadTelegramFile(message);
 
-        UserContext userContext = MessageHandler.userContextHolder.getUserContext(chatId);
+            UserContext userContext = MessageHandler.userContextHolder.getUserContext(chatId);
 
-        long productId = extractProductId(userContext.getAction());
+            long productId = extractProductId(userContext.getAction());
 
-        Product product = productService.getProductById(productId);
-        productService.updateProductFileId(product.getId(),
-                message.getDocument().getFileId());
+            Product product = productService.getProductById(productId);
+            productService.updateProductFileId(product.getId(),
+                    message.getDocument().getFileId());
 
-        MessageHandler.userContextHolder.clearActionUserContext(chatId);
-
-        return sendMsg(message, BotStringConstant.UPDATE_FILE_ID_MSG);
+            return sendMsg(message, BotStringConstant.UPDATE_FILE_ID_MSG);
+        } catch (Exception ex) {
+            return sendMsg(message, BotStringConstant.NOT_FILE);
+        } finally {
+            MessageHandler.userContextHolder.clearActionUserContext(chatId);
+        }
     }
 
     @Override
