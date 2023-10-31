@@ -31,7 +31,7 @@ public class UpdateFileId implements UpdateProduct {
     public BotApiMethod<?> update(Message message) {
         String chatId = message.getChatId().toString();
 
-        fileDownloaderService.downloadTelegramFile(message.getDocument());
+        fileDownloaderService.downloadTelegramFile(message);
 
         UserContext userContext = MessageHandler.userContextHolder.getUserContext(chatId);
 

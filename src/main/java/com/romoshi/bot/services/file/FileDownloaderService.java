@@ -2,12 +2,14 @@ package com.romoshi.bot.services.file;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.romoshi.bot.telegram.constant.BotStringConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.File;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,6 +17,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import static com.romoshi.bot.telegram.TelegramBot.sendMsg;
 
 @Service
 @Slf4j
@@ -31,8 +35,9 @@ public class FileDownloaderService {
         this.restTemplate = restTemplate;
     }
 
-    public void downloadTelegramFile(Document document) {
+    public void downloadTelegramFile(Message message) {
         try {
+            Document document = message.getDocument();
             String fileId = document.getFileId();
             File file = getFile(fileId);
 
@@ -44,6 +49,8 @@ public class FileDownloaderService {
             }
         } catch (IOException ex) {
             log.error("Can`t save file.", ex);
+        } catch (NullPointerException ex) {
+            sendMsg(message, BotStringConstant.NOT_FILE);
         }
 
     }
