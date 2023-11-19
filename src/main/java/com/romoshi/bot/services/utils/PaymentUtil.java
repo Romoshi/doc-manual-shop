@@ -15,6 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.payments.LabeledPrice;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,9 +58,47 @@ public class PaymentUtil {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        String requestBody = createJSON(link, chatId);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
 
+        try{
+            restTemplate.postForEntity(
+                    sendInvoiceUrl,
+                    requestEntity, Object.class);
+        } catch (Exception ex) {
+            log.error("Payment request error");
+        }
 
+    }
+
+    private String createJSON(CreateInvoiceLink link, String chatId) {
         List<List<InlineKeyboardButton>> keyboard = inlineKeyboardMaker.getPayButton();
+
+        BigDecimal price = BigDecimal.valueOf(link.getPrices().get(0).getAmount());
+        int value = price.divide(BigDecimal.valueOf(100L), RoundingMode.HALF_UP).intValue();
+
+        Map<String, Object> amount = new HashMap<>();
+        amount.put("value", value);
+        amount.put("currency", link.getCurrency());
+
+        Map<String, Object> itemsObj = new HashMap<>();
+        itemsObj.put("description", link.getTitle());
+        itemsObj.put("quantity", 1);
+        itemsObj.put("amount", amount);
+        itemsObj.put("vat_code", 1);
+
+        List<Object> items = new ArrayList<>();
+        items.add(itemsObj);
+
+        Map<String, Object> email = new HashMap<>();
+        email.put("email", link.getNeedEmail());
+
+        Map<String, Object> receiptObj = new HashMap<>();
+        receiptObj.put("items", items);
+        receiptObj.put("customer", email);
+
+        Map<String, Object> receipt = new HashMap<>();
+        receipt.put("receipt", receiptObj);
 
         Map<String, Object> requestObject = new HashMap<>();
         requestObject.put("chat_id", chatId);
@@ -70,14 +109,10 @@ public class PaymentUtil {
         requestObject.put("currency", link.getCurrency());
         requestObject.put("prices", link.getPrices());
         requestObject.put("reply_markup", Map.of("inline_keyboard", keyboard));
-        requestObject.put("protect_content", true);
+        requestObject.put("need_email", true);
+        requestObject.put("send_email_to_provider", true);
+        requestObject.put("provider_data", receipt);
 
-        String requestBody = gson.toJson(requestObject);
-
-        HttpEntity<Object> requestEntity = new HttpEntity<>(requestBody, headers);
-
-        restTemplate.postForEntity(
-                sendInvoiceUrl,
-                requestEntity, Object.class);
+        return gson.toJson(requestObject);
     }
 }
